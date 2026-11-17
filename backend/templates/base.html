@@ -4,10 +4,38 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0b0c">
     <title>{% block title %}{{ page.title }}{% endblock %}</title>
+    {% if page.search_description %}
+      <meta name="description" content="{{ page.search_description }}">
+    {% endif %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'brand/shaggy-goat-icon.svg' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'brand/favicon-32.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'brand/apple-touch-icon.png' %}">
     <link rel="stylesheet" href="{% static 'css/site.css' %}">
+    {% block extra_head %}{% endblock %}
   </head>
-  <body class="min-h-screen bg-white text-slate-900 antialiased">
+  <body class="{% block body_class %}{% endblock %}">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="goat-mark" viewBox="120 20 260 265">
+        <g fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="236,118 220,66 158,34 198,86 214,132"/>
+          <polygon points="264,118 280,66 342,34 302,86 286,132"/>
+          <polygon points="236,118 250,108 264,118 250,136"/>
+          <polygon points="214,132 236,118 250,136 226,154"/>
+          <polygon points="286,132 264,118 250,136 274,154"/>
+          <polygon points="214,132 162,144 186,164 218,154"/>
+          <polygon points="286,132 338,144 314,164 282,154"/>
+          <polygon points="250,136 226,154 236,204 250,212 264,204 274,154"/>
+          <line x1="250" y1="136" x2="250" y2="212"/>
+          <polyline points="218,154 214,186 236,204"/>
+          <polyline points="282,154 286,186 264,204"/>
+          <polygon points="236,204 250,212 264,204 258,224 242,224"/>
+          <polyline points="214,186 202,226 218,220 218,256 234,242 250,276 266,242 282,256 282,220 298,226 286,186"/>
+          <polyline points="234,242 242,224 258,224 266,242"/>
+        </g>
+      </symbol>
+    </svg>
     {% block content %}{% endblock %}
   </body>
 </html>

@@ -1,5 +1,5 @@
 <!-- site-name:start -->
-# Outpost 4
+# Shaggy Goat Digital
 <!-- site-name:end -->
 
 A reusable, Docker-first Django and Wagtail template for client websites, using

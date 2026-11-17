@@ -1,0 +1,15 @@
+<header class="site-nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/" aria-label="Shaggy Goat Digital, LLC home">
+      <span class="mark"><svg aria-hidden="true"><use href="#goat-mark"/></svg></span>
+      <span class="word">Shaggy Goat Digital <span class="llc">LLC</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="/#portfolio">Portfolio</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/#why">Why the goat</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <a class="btn" href="{{ page.nav_cta_url|default:'/#contact' }}">{{ page.nav_cta_label|default:"Start a project" }}</a>
+  </div>
+</header>

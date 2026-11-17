@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="120 20 260 265" width="260" height="265" role="img" aria-labelledby="iconTitle">
+  <title id="iconTitle">Shaggy Goat Digital Icon</title>
+
+  <g fill="none" stroke="#FDBE00" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Horns -->
+    <polygon points="236,118 220,66 158,34 198,86 214,132" />
+    <polygon points="264,118 280,66 342,34 302,86 286,132" />
+
+    <!-- Crown & Forehead Facets -->
+    <polygon points="236,118 250,108 264,118 250,136" />
+    <polygon points="214,132 236,118 250,136 226,154" />
+    <polygon points="286,132 264,118 250,136 274,154" />
+
+    <!-- Ears -->
+    <polygon points="214,132 162,144 186,164 218,154" />
+    <polygon points="286,132 338,144 314,164 282,154" />
+
+    <!-- Bridge of Nose & Cheek Facets -->
+    <polygon points="250,136 226,154 236,204 250,212 264,204 274,154" />
+    <line x1="250" y1="136" x2="250" y2="212" />
+    <polyline points="218,154 214,186 236,204" />
+    <polyline points="282,154 286,186 264,204" />
+
+    <!-- Muzzle & Nose -->
+    <polygon points="236,204 250,212 264,204 258,224 242,224" />
+
+    <!-- Shaggy Beard -->
+    <polyline points="214,186 202,226 218,220 218,256 234,242 250,276 266,242 282,256 282,220 298,226 286,186" />
+    <polyline points="234,242 242,224 258,224 266,242" />
+  </g>
+</svg>

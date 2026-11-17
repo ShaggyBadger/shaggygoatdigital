@@ -1,12 +1,159 @@
 {% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
-<main class="mx-auto max-w-5xl px-6 py-20">
-  <h1 class="text-4xl font-bold tracking-tight text-slate-900">{{ page.title }}</h1>
-  {% if page.intro %}
-    <div class="mt-6 max-w-none">{{ page.intro }}</div>
-  {% else %}
-    <p class="mt-4 text-lg text-slate-600">Your new website starts here.</p>
-  {% endif %}
-</main>
+  {% include "partials/site_nav.html" %}
+
+  <main>
+    <section class="hero" id="top">
+      {% if page.hero_image %}
+        {% image page.hero_image width-1600 as hero_image %}
+        <div class="hero-bg" aria-hidden="true">
+          <img src="{{ hero_image.url }}" alt="" fetchpriority="high">
+        </div>
+      {% else %}
+        <div class="hero-bg hero-bg--empty" aria-hidden="true"></div>
+      {% endif %}
+
+      <div class="wrap hero-inner">
+        <h1>{{ page.hero_heading }}</h1>
+        <div class="hero-copy">
+          <p class="lede">{{ page.hero_intro }}</p>
+          <div class="hero-actions">
+            <a class="btn" href="{{ page.hero_cta_url }}">{{ page.hero_cta_label }}</a>
+            <a class="phone" href="{{ page.hero_secondary_url }}">{{ page.hero_secondary_label }}</a>
+          </div>
+          <div class="hero-price">{{ page.hero_price_line|richtext }}</div>
+        </div>
+        <p class="hero-credit">{{ page.hero_image_credit }}</p>
+      </div>
+    </section>
+
+    <section class="services">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>{{ page.services_heading }}</h2>
+          <p>{{ page.services_intro }}</p>
+        </div>
+
+        <div class="svc-grid">
+          {% for card in page.service_cards.all %}
+            <div class="svc">
+              <h3>{{ card.title }}</h3>
+              <p>{{ card.description }}</p>
+              <span>{{ card.price_label }}</span>
+            </div>
+          {% endfor %}
+        </div>
+
+        <p class="svc-foot">{{ page.services_footnote }}</p>
+      </div>
+    </section>
+
+    <section class="price-band" id="pricing">
+      <div class="wrap price-inner">
+        <div class="price-big">
+          <p class="label">{{ page.pricing_kicker }}</p>
+          <strong>{{ page.pricing_amount }}</strong>
+        </div>
+        <div class="price-copy">
+          <p>{{ page.pricing_body }}</p>
+          <p class="small">{{ page.pricing_note }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="portfolio" id="portfolio">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>{{ page.portfolio_heading }}</h2>
+          <p>{{ page.portfolio_intro }}</p>
+        </div>
+
+        <div class="portfolio-grid">
+          <div class="portfolio-lead">
+            <p class="label gold">{{ page.portfolio_project_label }}</p>
+            <p>{{ page.portfolio_project_summary }}</p>
+            <a class="btn btn-outline" href="{{ page.portfolio_url }}">{{ page.portfolio_cta_label }}</a>
+          </div>
+
+          <blockquote class="portfolio-quote">
+            “{{ page.portfolio_quote }}”
+            <cite>
+              {{ page.portfolio_quote_author }},
+              <a href="{{ page.portfolio_quote_url }}" target="_blank" rel="noopener">{{ page.portfolio_quote_company }}</a>
+            </cite>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="manifesto" id="why">
+      <div class="wrap manifesto-grid">
+        <div class="manifesto-copy">
+          <h2>{{ page.manifesto_heading }}</h2>
+          {{ page.manifesto_body|richtext }}
+          <p class="tagline">{{ page.manifesto_tagline }}</p>
+        </div>
+        <svg class="manifesto-goat" aria-hidden="true"><use href="#goat-mark"/></svg>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="wrap contact-grid">
+        <div>
+          <h2>{{ page.contact_heading }}</h2>
+          <p>{{ page.contact_intro }}</p>
+          <a class="phone" href="{{ page.contact_phone_url }}">{{ page.contact_phone_label }}</a>
+        </div>
+
+        <form class="form" method="post" action="#contact">
+          {% csrf_token %}
+          <div class="hp" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          {% if messages %}
+            <div class="form-messages" role="status">
+              {% for message in messages %}
+                <p class="{{ message.tags }}">{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="field">
+            <label for="{{ form.name.id_for_label }}">Name</label>
+            {{ form.name }}
+            {% for error in form.name.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+          </div>
+          <div class="field">
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email }}
+            {% for error in form.email.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+          </div>
+          <div class="field">
+            <label for="{{ form.business.id_for_label }}">Business</label>
+            {{ form.business }}
+            {% for error in form.business.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+          </div>
+          <div class="field">
+            <label for="{{ form.need.id_for_label }}">What do you need?</label>
+            {{ form.need }}
+            {% for error in form.need.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+          </div>
+          <div class="field">
+            <label for="{{ form.message.id_for_label }}">What are you running?</label>
+            {{ form.message }}
+            {% for error in form.message.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+          </div>
+
+          <button class="btn" type="submit">{{ page.contact_submit_label }}</button>
+          <p class="no-scapegoats">{{ page.contact_note }}</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/site_footer.html" %}
 {% endblock %}

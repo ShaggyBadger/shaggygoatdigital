@@ -1,4 +1,6 @@
 .env*
+.pgdata/
+db/dumps/
 .git/
 .idea/
 .vscode/

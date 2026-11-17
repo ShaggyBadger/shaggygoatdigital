@@ -243,3 +243,17 @@ WAGTAIL_SITE_NAME = os.environ.get("WAGTAIL_SITE_NAME", "New Website")
 WAGTAILADMIN_BASE_URL = os.environ.get(
     "WAGTAILADMIN_BASE_URL", "http://localhost:8000"
 )
+
+# Contact form notifications. The console backend prints messages locally; set
+# DJANGO_EMAIL_BACKEND and the EMAIL_* values for a real SMTP provider.
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "").strip()
+EMAIL_BACKEND = os.environ.get(
+    "DJANGO_EMAIL_BACKEND",
+    "django.core.mail.backends.console.EmailBackend",
+)
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "website@localhost")
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587") or "587")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = environment_bool("EMAIL_USE_TLS", default=True)
