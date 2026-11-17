@@ -7,9 +7,15 @@
   <main>
     <section class="hero" id="top">
       {% if page.hero_image %}
-        {% image page.hero_image width-1600 as hero_image %}
+        {% image page.hero_image width-480 as hero_sm %}
+        {% image page.hero_image width-960 as hero_md %}
+        {% image page.hero_image width-1440 as hero_lg %}
         <div class="hero-bg" aria-hidden="true">
-          <img src="{{ hero_image.url }}" alt="" fetchpriority="high">
+          <img src="{{ hero_sm.url }}"
+               srcset="{{ hero_sm.url }} 480w, {{ hero_md.url }} 960w, {{ hero_lg.url }} 1440w"
+               sizes="(min-width: 901px) 480px, 92vw"
+               width="{{ hero_sm.width }}" height="{{ hero_sm.height }}"
+               alt="" fetchpriority="high">
         </div>
       {% else %}
         <div class="hero-bg hero-bg--empty" aria-hidden="true"></div>
@@ -25,8 +31,8 @@
           </div>
           <div class="hero-price">{{ page.hero_price_line|richtext }}</div>
         </div>
-        <p class="hero-credit">{{ page.hero_image_credit }}</p>
       </div>
+      <p class="hero-credit">{{ page.hero_image_credit }}</p>
     </section>
 
     <section class="services">
@@ -39,7 +45,7 @@
         <div class="svc-grid">
           {% for card in page.service_cards.all %}
             <div class="svc">
-              <h3>{{ card.title }}</h3>
+              <h3><span class="svc-icon" aria-hidden="true"></span>{{ card.title }}</h3>
               <p>{{ card.description }}</p>
               <span>{{ card.price_label }}</span>
             </div>
@@ -74,7 +80,9 @@
           <div class="portfolio-lead">
             <p class="label gold">{{ page.portfolio_project_label }}</p>
             <p>{{ page.portfolio_project_summary }}</p>
-            <a class="btn btn-outline" href="{{ page.portfolio_url }}">{{ page.portfolio_cta_label }}</a>
+            {% if page.portfolio_url %}
+              <a class="btn btn-outline" href="{{ page.portfolio_url }}">{{ page.portfolio_cta_label }}</a>
+            {% endif %}
           </div>
 
           <blockquote class="portfolio-quote">

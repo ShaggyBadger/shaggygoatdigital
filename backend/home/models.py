@@ -110,7 +110,9 @@ class HomePage(Page):
         max_length=80,
         default="See the portfolio",
     )
-    portfolio_url = models.CharField(max_length=200, default="/portfolio/")
+    portfolio_url = models.CharField(
+        max_length=200, default="https://grannycoded.com"
+    )
 
     manifesto_heading = models.CharField(max_length=80, default="Why the goat?")
     manifesto_body = RichTextField(

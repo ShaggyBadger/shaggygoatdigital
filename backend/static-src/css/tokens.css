@@ -1,0 +1,49 @@
+/*
+ * Shaggy Goat Digital design tokens.
+ *
+ * Change the palette, type, layout, and motion here. Component CSS and
+ * Tailwind utilities (text-gold, bg-stone, font-display, border-line, etc.)
+ * both read from these values.
+ *
+ * Static brand assets (favicon, app icon, SVG artwork) bake their colors in
+ * and must be regenerated separately if the palette changes.
+ */
+
+@theme static {
+  /* Palette */
+  --color-black: #0b0b0c;
+  --color-stone: #1b1917;
+  --color-ink: #f4f1ea;
+  --color-bone: #f4f1ea;
+  --color-muted: #a5a096;
+  --color-muted-on-light: #5f584c;
+  --color-credit: #d8d2c6;
+  --color-lede: #cfc9bd;
+  --color-copyright: #8f887c;
+  --color-gold: #fdbe00;
+  --color-error: #8a1f11;
+  --color-line: rgba(244, 241, 234, 0.16);
+  --color-line-strong: rgba(244, 241, 234, 0.28);
+  --color-field-bg: rgba(255, 255, 255, 0.55);
+  --color-message-bg: rgba(253, 190, 0, 0.18);
+  --color-hero-glow: rgba(253, 190, 0, 0.12);
+  --color-hero-deep: #171614;
+
+  /* Type */
+  --font-display: "Nimbus Sans", "Liberation Sans", Helvetica, sans-serif;
+  --font-body: Lato, "Nimbus Sans", system-ui, sans-serif;
+  --font-quote: "Bitstream Charter", Charter, Georgia, serif;
+
+  /* Layout */
+  --layout-max: 1120px;
+  --layout-gutter: 64px;
+  --layout-gutter-md: 40px;
+  --layout-gutter-sm: 32px;
+  --nav-height: 72px;
+  --nav-height-sm: 64px;
+  --section-offset: 88px;
+
+  /* Motion */
+  --motion-fast: 160ms;
+  --motion-ease: ease;
+}

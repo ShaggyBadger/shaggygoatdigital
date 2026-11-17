@@ -78,6 +78,10 @@ Built the approved homepage in Wagtail.
   link to the edit form.
 - Mobile services spacing was tightened (no double rule above the first card) and
   the manifesto goat is centered on small screens.
+- Shared palette, type, layout, and motion values now live in
+  `backend/static-src/css/tokens.css` (Tailwind v4 `@theme static`), with
+  component CSS using those tokens. The design-token convention is routed from
+  `instructions/project_conventions/design_and_tokens.md`.
 
 Checks run:
 
