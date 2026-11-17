@@ -9,6 +9,8 @@ live here.
   `/admin/` is separate and unchanged.
 - `templates/` contains shared Django templates; `static-src/` contains Tailwind
   input, and `static/` receives generated assets.
+- Shared design tokens live in `static-src/css/tokens.css`; use them instead
+  of hardcoded colors or font stacks and rebuild `site.css` after changes.
 - `requirements.txt` and the npm manifests pin the backend and Tailwind tools.
 
 Run project commands from the repository root through Compose, for example:

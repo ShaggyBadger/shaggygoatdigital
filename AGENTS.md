@@ -12,3 +12,5 @@
   dependencies into the host Python environment.
 - Never print or commit `.env` values. Confirm the target before production
   database, deployment, or destructive operations.
+- Design tokens (colors, type, layout, motion) live in
+  `backend/static-src/css/tokens.css`; use them instead of hardcoded values.

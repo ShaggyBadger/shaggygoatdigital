@@ -205,7 +205,13 @@ push that working copy back over production.
 
 The `tailwind` service uses Node in Docker to watch Django templates and write
 `backend/static/css/site.css`. The compiled CSS is generated locally and is
-ignored by Git. For a one-time minified build, run
+ignored by Git.
+
+Shared palette, type, layout, and motion tokens live in
+[`backend/static-src/css/tokens.css`](backend/static-src/css/tokens.css). Edit
+there and rebuild the stylesheet.
+
+For a one-time minified build, run
 `docker compose exec tailwind npm run build:css`.
 
 ## Project guidance
