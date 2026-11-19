@@ -17,3 +17,11 @@ def absolute_url(value, request):
         return value
 
     return request.build_absolute_uri(value)
+
+
+@register.filter
+def lines(value):
+    """Split a textarea value into non-empty lines for list rendering."""
+    if not value:
+        return []
+    return [line.strip() for line in str(value).splitlines() if line.strip()]

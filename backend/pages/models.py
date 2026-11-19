@@ -67,18 +67,18 @@ class ProcessPage(Page):
     heading = models.CharField(max_length=120, default="How this works.")
     intro = models.TextField(
         default=(
-            "Four steps from one sentence in a form to a site you can send people "
+            "Five steps from one sentence in a form to a site you can send people "
             "to. Here is the whole thing, in order, including the parts that "
             "usually get left until after the invoice."
         )
     )
 
-    steps_heading = models.CharField(max_length=80, default="Four steps, start to finish")
+    steps_heading = models.CharField(max_length=80, default="Five steps, start to finish")
     steps_intro = models.CharField(
         max_length=240,
         default=(
             "Most of these take a day or two. You handle the first one and the "
-            "third one. We do the rest."
+            "fourth one. We do the rest."
         ),
     )
 
@@ -202,3 +202,29 @@ class ProcessPage(Page):
     promote_panels = Page.promote_panels
 
     template = "pages/process_page.html"
+
+
+class ContentPage(Page):
+    """A plain page for policy and other long-form text."""
+
+    max_count = 5
+
+    eyebrow = models.CharField(max_length=60, blank=True, default="")
+    intro = models.TextField(blank=True, default="")
+    body = RichTextField(
+        blank=True,
+        features=["h2", "h3", "bold", "italic", "link", "ol", "ul"],
+    )
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("eyebrow"),
+                FieldPanel("intro"),
+                FieldPanel("body"),
+            ],
+            heading="Content",
+        ),
+    ]
+
+    template = "pages/content_page.html"

@@ -1,0 +1,27 @@
+{% load home_tags %}
+
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>{{ page.pricing_heading }}</h2>
+      <p>{{ page.pricing_intro }}</p>
+    </div>
+
+    <div class="tiers">
+      {% for tier in page.price_tiers.all %}
+        <div class="tier">
+          <p class="tier-name">{{ tier.name }}</p>
+          <p class="tier-price">{{ tier.price }}</p>
+          <p class="tier-blurb">{{ tier.blurb }}</p>
+          <ul class="tier-list">
+            {% for feature in tier.features|lines %}
+              <li>{{ feature }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endfor %}
+    </div>
+
+    <p class="tier-note">{{ page.pricing_note }}</p>
+  </div>
+</section>

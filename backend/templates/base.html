@@ -30,7 +30,13 @@
         "name": "Shaggy Goat Digital, LLC",
         "url": "{{ request.scheme }}://{{ request.get_host }}/",
         "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'brand/shaggy-goat-icon.svg' %}",
-        "description": "Web design and development for local businesses. Websites with a backbone."
+        "description": "Web design and development for local businesses. Websites with a backbone.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressRegion": "NC",
+          "addressCountry": "US"
+        },
+        "areaServed": "North Carolina"
       }
     </script>
     <link rel="icon" type="image/svg+xml" href="{% static 'brand/shaggy-goat-icon.svg' %}">

@@ -1,0 +1,19 @@
+<section class="pain" id="why-us">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>{{ page.pain_heading }}</h2>
+      <p>{{ page.pain_intro }}</p>
+    </div>
+
+    <ul class="pain-list">
+      {% for point in page.pain_points.all %}
+        <li class="pain-item">
+          <h3>{{ point.title }}</h3>
+          <p>{{ point.body }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <p class="pain-foot">{{ page.pain_footnote }}</p>
+  </div>
+</section>

@@ -341,3 +341,56 @@
     }
     .spec dt { padding-top: 0; }
   }
+
+  /* Long-form pages (privacy and anything else) */
+  .page-body {
+    padding: 56px 0 76px;
+    background: var(--color-black);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .prose { max-width: 72ch; }
+
+  .prose h2 {
+    margin: 42px 0 12px;
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .prose h2:first-child { margin-top: 0; }
+
+  .prose h3 {
+    margin: 28px 0 10px;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .prose p,
+  .prose li {
+    color: var(--color-muted);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .prose ul,
+  .prose ol {
+    margin: 0 0 18px;
+    padding-left: 22px;
+  }
+
+  .prose ul { list-style: disc; }
+  .prose ol { list-style: decimal; }
+  .prose li::marker { color: var(--color-gold); }
+
+  .prose li { margin-bottom: 6px; }
+
+  .prose a {
+    color: var(--color-gold);
+    text-underline-offset: 3px;
+  }
+

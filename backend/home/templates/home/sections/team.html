@@ -1,0 +1,26 @@
+{% load wagtailimages_tags %}
+
+<section class="team" id="who">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>{{ page.team_heading }}</h2>
+      <p>{{ page.team_intro }}</p>
+    </div>
+
+    <div class="team-grid">
+      {% for member in page.team_members.all %}
+        <div class="team-card">
+          {% if member.photo %}
+            {% image member.photo fill-360x360 as portrait %}
+            <img class="team-photo" src="{{ portrait.url }}"
+                 width="{{ portrait.width }}" height="{{ portrait.height }}"
+                 alt="{{ member.name }}" loading="lazy">
+          {% endif %}
+          <h3>{{ member.name }}</h3>
+          <p class="team-role">{{ member.role }}</p>
+          <p class="team-bio">{{ member.bio }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

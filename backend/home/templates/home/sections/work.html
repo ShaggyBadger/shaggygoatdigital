@@ -1,0 +1,55 @@
+{% load wagtailimages_tags %}
+
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>{{ page.work_heading }}</h2>
+      <p>{{ page.work_intro }}</p>
+    </div>
+
+    {% for item in page.work_items.all %}
+      <article class="work-card{% if not item.image %} work-card--text{% endif %}">
+        {% if item.image %}
+          <div class="work-shot">
+            {% image item.image width-900 as shot %}
+            <img src="{{ shot.url }}"
+                 width="{{ shot.width }}" height="{{ shot.height }}"
+                 alt="{{ item.client_label }}, on a laptop screen"
+                 loading="lazy">
+          </div>
+        {% endif %}
+
+        <div class="work-copy">
+          <p class="label gold">{{ item.client_label }}</p>
+          <h3>{{ item.project_title }}</h3>
+
+          <dl class="work-facts">
+            <div>
+              <dt>The problem</dt>
+              <dd>{{ item.problem }}</dd>
+            </div>
+            <div>
+              <dt>What we built</dt>
+              <dd>{{ item.built }}</dd>
+            </div>
+            <div>
+              <dt>What changed</dt>
+              <dd>{{ item.outcome }}</dd>
+            </div>
+          </dl>
+
+          {% if item.quote %}
+            <blockquote class="work-quote">
+              “{{ item.quote }}”
+              {% if item.quote_author %}<cite>{{ item.quote_author }}</cite>{% endif %}
+            </blockquote>
+          {% endif %}
+
+          {% if item.url %}
+            <a class="btn btn-outline" href="{{ item.url }}" target="_blank" rel="noopener">Visit the site</a>
+          {% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>

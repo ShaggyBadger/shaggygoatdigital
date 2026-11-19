@@ -35,6 +35,8 @@
       <p class="hero-credit">{{ page.hero_image_credit }}</p>
     </section>
 
+    {% include "home/sections/pain_points.html" %}
+
     <section class="services">
       <div class="wrap">
         <div class="section-head">
@@ -56,18 +58,8 @@
       </div>
     </section>
 
-    <section class="price-band" id="pricing">
-      <div class="wrap price-inner">
-        <div class="price-big">
-          <p class="label">{{ page.pricing_kicker }}</p>
-          <strong>{{ page.pricing_amount }}</strong>
-        </div>
-        <div class="price-copy">
-          <p>{{ page.pricing_body }}</p>
-          <p class="small">{{ page.pricing_note }}</p>
-        </div>
-      </div>
-    </section>
+    {% include "home/sections/work.html" %}
+    {% include "home/sections/pricing.html" %}
 
     <section class="testimonials" id="testimonials">
       <div class="wrap">
@@ -102,6 +94,8 @@
         <svg class="manifesto-goat" aria-hidden="true"><use href="#goat-mark"/></svg>
       </div>
     </section>
+
+    {% include "home/sections/team.html" %}
 
     <section class="contact" id="contact">
       <div class="wrap contact-grid">

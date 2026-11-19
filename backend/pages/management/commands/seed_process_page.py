@@ -21,6 +21,16 @@ STEPS = [
         "client_note": "You: fill in the form. Two minutes.",
     },
     {
+        "title": "We design the top of your homepage, free.",
+        "body": (
+            "Before you pay anything, we design the first screen of your site: "
+            "the headline, the layout, and how it looks on a phone. You see the "
+            "direction while it can still change. If it's wrong, you owe nothing "
+            "and you keep the file."
+        ),
+        "client_note": "You: look at it and say what's off.",
+    },
+    {
         "title": "We quote it in writing.",
         "body": (
             "A fixed price for the pages you asked for, plus a plain list of "
@@ -112,7 +122,7 @@ class Command(BaseCommand):
                 slug="how-it-works",
                 seo_title="How it works | Shaggy Goat Digital, LLC",
                 search_description=(
-                    "The four steps from an email to a live site, what's under "
+                    "The five steps from an email to a live site, what's under "
                     "the hood, what you own afterwards, and what $50 a month of "
                     "maintenance covers."
                 ),
@@ -125,6 +135,27 @@ class Command(BaseCommand):
                     ProcessStep(page=page, sort_order=index, **step)
                     for index, step in enumerate(STEPS)
                 ]
+            )
+        elif not page.steps.filter(title=STEPS[1]["title"]).exists():
+            # Existing pages predate the free-concept step: shift the steps that
+            # follow it down one place, then insert at position two.
+            for step in page.steps.filter(sort_order__gte=1).order_by("-sort_order"):
+                step.sort_order += 1
+                step.save(update_fields=["sort_order"])
+            ProcessStep.objects.create(page=page, sort_order=1, **STEPS[1])
+
+        if page.steps_heading == "Four steps, start to finish":
+            page.steps_heading = "Five steps, start to finish"
+        if page.steps_intro.startswith("Most of these take a day or two. You handle the first"):
+            page.steps_intro = (
+                "Most of these take a day or two. You handle the first one and "
+                "the fourth one. We do the rest."
+            )
+        if page.intro.startswith("Four steps from one sentence"):
+            page.intro = (
+                "Five steps from one sentence in a form to a site you can send "
+                "people to. Here is the whole thing, in order, including the "
+                "parts that usually get left until after the invoice."
             )
 
         if not page.stack_items.exists():
