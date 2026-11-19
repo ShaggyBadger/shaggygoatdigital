@@ -330,6 +330,7 @@ class TeamMember(Orderable):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
+        help_text="Portrait crop, 4:5. Upload it in Images first, then pick it here.",
     )
 
     panels = [

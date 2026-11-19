@@ -48,3 +48,15 @@ rendered at 1440px and 390px.
 Add photos to the About team cards, upload the GrannyCoded screenshot on
 production (it lives in the dev media bucket), and decide whether to keep the
 pricing band on the landing page or move it.
+
+## Follow-up pass (same day)
+
+- `SiteSettings` (`home/models.py`, Wagtail site settings) now owns the nav
+  button label/URL and the footer tagline, so they are edited once under
+  Settings -> Site settings and apply to every page. The duplicate fields came
+  off `HomePage`.
+- Team cards on About render a 4:5 portrait frame with a placeholder mark when
+  no photo is set; `TeamMember.photo` carries help text about the crop.
+- Admin check: HomePage and its four children (`how-it-works`, `privacy`,
+  `sites-weve-built`, `about`) are live and editable under Pages in the Wagtail
+  admin.

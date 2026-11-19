@@ -3,6 +3,7 @@ from django.db import models
 from django.shortcuts import redirect, render
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page
 
@@ -138,13 +139,6 @@ class HomePage(Page):
     contact_submit_label = models.CharField(max_length=80, default="Send it")
     contact_note = models.CharField(max_length=80, default="No scapegoats.")
 
-    nav_cta_label = models.CharField(max_length=80, default="Start a project")
-    nav_cta_url = models.CharField(max_length=200, default="/#contact")
-    footer_tagline = models.CharField(
-        max_length=160,
-        default="Websites with a backbone. And a goat.",
-    )
-
     content_panels = Page.content_panels + [
         MultiFieldPanel(
             [
@@ -210,14 +204,6 @@ class HomePage(Page):
             ],
             heading="Contact",
         ),
-        MultiFieldPanel(
-            [
-                FieldPanel("nav_cta_label"),
-                FieldPanel("nav_cta_url"),
-                FieldPanel("footer_tagline"),
-            ],
-            heading="Navigation and footer",
-        ),
     ]
 
     class Meta:
@@ -249,6 +235,29 @@ class HomePage(Page):
             "home/home_page.html",
             {"page": self, "form": form},
         )
+
+
+@register_setting(icon="cog")
+class SiteSettings(BaseSiteSetting):
+    """Copy that appears on every page: the nav button and the footer line."""
+
+    nav_cta_label = models.CharField(max_length=80, default="Start a project")
+    nav_cta_url = models.CharField(max_length=200, default="/#contact")
+    footer_tagline = models.CharField(
+        max_length=160,
+        default="Websites with a backbone. And a goat.",
+    )
+
+    panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("nav_cta_label"),
+                FieldPanel("nav_cta_url"),
+            ],
+            heading="Navigation button",
+        ),
+        FieldPanel("footer_tagline"),
+    ]
 
 
 class ServiceCard(Orderable):

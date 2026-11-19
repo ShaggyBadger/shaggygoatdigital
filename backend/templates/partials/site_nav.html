@@ -13,7 +13,7 @@
       <a href="/about/">About</a>
     </nav>
 
-    <a class="btn" href="{{ page.nav_cta_url|default:'/#contact' }}">{{ page.nav_cta_label|default:"Start a project" }}</a>
+    <a class="btn" href="{{ settings.home.SiteSettings.nav_cta_url|default:'/#contact' }}">{{ settings.home.SiteSettings.nav_cta_label|default:"Start a project" }}</a>
 
     <details class="nav-menu">
       <summary class="nav-toggle">
@@ -26,7 +26,7 @@
         <a href="/#testimonials">Testimonials</a>
         <a href="/about/">About</a>
         <div class="nav-panel-cta">
-          <a class="btn" href="{{ page.nav_cta_url|default:'/#contact' }}">{{ page.nav_cta_label|default:"Start a project" }}</a>
+          <a class="btn" href="{{ settings.home.SiteSettings.nav_cta_url|default:'/#contact' }}">{{ settings.home.SiteSettings.nav_cta_label|default:"Start a project" }}</a>
         </div>
       </nav>
     </details>

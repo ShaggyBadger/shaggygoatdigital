@@ -39,10 +39,14 @@
           {% for member in page.team_members.all %}
             <div class="team-card">
               {% if member.photo %}
-                {% image member.photo fill-360x360 as portrait %}
+                {% image member.photo fill-480x600 as portrait %}
                 <img class="team-photo" src="{{ portrait.url }}"
                      width="{{ portrait.width }}" height="{{ portrait.height }}"
                      alt="{{ member.name }}" loading="lazy">
+              {% else %}
+                <div class="team-photo team-photo--empty" aria-hidden="true">
+                  <svg><use href="#goat-mark"/></svg>
+                </div>
               {% endif %}
               <h3>{{ member.name }}</h3>
               <p class="team-role">{{ member.role }}</p>

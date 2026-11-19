@@ -13,6 +13,7 @@
     "backend/home/migrations/0016_public_copy.py",
     "backend/home/migrations/0017_alter_contactsubmission_need_and_more.py",
     "backend/home/migrations/0018_hero_price_line_copy.py",
+    "backend/home/migrations/0019_remove_homepage_footer_tagline_and_more.py",
     "backend/home/models.py",
     "backend/home/templates/home/home_page.html",
     "backend/home/templates/home/sections/",
@@ -28,6 +29,7 @@
     "backend/pages/migrations/0003_alter_processpage_steps_intro.py",
     "backend/pages/migrations/0004_aboutpage_portfoliopage_portfolioitem_teammember.py",
     "backend/pages/migrations/0005_aboutpage_goat_body_aboutpage_goat_heading.py",
+    "backend/pages/migrations/0006_alter_teammember_photo.py",
     "backend/pages/models.py",
     "backend/pages/templates/pages/about_page.html",
     "backend/pages/templates/pages/content_page.html",
@@ -49,7 +51,9 @@
     "tests: 21 passed",
     "Tailwind build: complete",
     "/, /how-it-works/, /sites-weve-built/, /about/, /privacy/, /sitemap.xml return 200",
-    "Homepage, Sites we\u2019ve built, and About rendered at 1440px; homepage at 390px"
+    "Homepage, Sites we\u2019ve built, and About rendered at 1440px; homepage at 390px",
+    "Site settings render the nav CTA and footer tagline on every page",
+    "About team photo frames render with placeholders"
   ],
   "blockers": [],
   "next_actions": []

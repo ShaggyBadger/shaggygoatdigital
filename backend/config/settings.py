@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "home",
     "pages",
     "wagtail.contrib.forms",
+    "wagtail.contrib.settings",
     "wagtail.contrib.sitemaps",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
