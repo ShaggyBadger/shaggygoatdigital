@@ -24,37 +24,33 @@ class HomePageTests(TestCase):
         self.assertContains(response, "<title>Shaggy Goat Digital, LLC | Websites with a backbone</title>")
         self.assertContains(response, "Websites with a backbone.")
         self.assertContains(response, "You could build this yourself.")
+        self.assertContains(response, "A goat can climb a wall.")
         self.assertContains(response, "Getting found")
         self.assertContains(response, "Get found")
-        self.assertContains(response, "GrannyCoded")
-        self.assertContains(response, "Visit the site")
-        self.assertContains(response, "Brochure")
-        self.assertContains(response, "From $2,500")
+        self.assertContains(response, "Starter site")
+        self.assertContains(response, "Custom build")
         self.assertContains(response, "Maintenance is $50 a month")
         self.assertContains(response, "Testimonials")
         self.assertContains(response, "I sent over product photos")
-        self.assertContains(response, "Josh Ballard")
-        self.assertContains(response, "Leah Ballard")
-        self.assertContains(response, "Creative director")
         self.assertContains(response, "statement of work")
-        self.assertContains(response, "North Carolina")
         self.assertContains(response, "No scapegoats.")
         self.assertContains(response, 'itemtype="https://schema.org/Review"')
         self.assertContains(response, '"@type": "Organization"')
         self.assertContains(response, '"addressRegion": "NC"')
         self.assertContains(response, 'rel="canonical"')
         self.assertContains(response, 'href="/#testimonials"')
-        self.assertContains(response, 'href="/#work"')
-        self.assertContains(response, 'class="hero-cliff"')
 
     def test_seed_creates_three_service_cards(self):
         self.assertEqual(self.page.service_cards.count(), 3)
 
     def test_seed_creates_sales_sections(self):
         self.assertEqual(self.page.pain_points.count(), 4)
-        self.assertEqual(self.page.work_items.count(), 1)
         self.assertEqual(self.page.price_tiers.count(), 3)
-        self.assertEqual(self.page.team_members.count(), 2)
+
+    def test_each_section_funnels_to_the_contact_form(self):
+        response = self.client.get("/")
+
+        self.assertContains(response, 'class="section-cta" href="#contact"', count=4)
 
     def test_contact_submission_is_saved(self):
         response = self.client.post("/", self.form_data, follow=True)

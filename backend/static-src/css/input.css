@@ -265,29 +265,6 @@
     padding: 46px 0 54px;
   }
 
-  /* The climbing goat: desktop only, tucked into the left gutter. */
-  .hero-cliff { display: none; }
-
-  @media (min-width: 1200px) {
-    .hero-cliff {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      display: block;
-      width: 200px;
-      color: var(--color-gold);
-      pointer-events: none;
-    }
-
-    .hero-cliff svg {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    .hero-inner { padding-left: 210px; }
-  }
-
   .hero h1 {
     max-width: 13ch;
     margin: 0 0 26px;
@@ -385,9 +362,9 @@
 
   /* Services */
   .services {
-    padding: 64px 0 0;
-    background: var(--color-stone);
-    border-top: 2px solid var(--color-gold);
+    padding: 64px 0 40px;
+    background: var(--color-black);
+    border-top: 1px solid var(--color-line);
   }
 
   .svc-grid {
@@ -459,8 +436,8 @@
   /* Pain points */
   .pain {
     padding: 60px 0 64px;
-    background: var(--color-black);
-    border-top: 1px solid var(--color-line);
+    background: var(--color-stone);
+    border-top: 2px solid var(--color-gold);
   }
 
   .pain-list {
@@ -591,13 +568,9 @@
   /* Pricing */
   .pricing {
     padding: 64px 0 66px;
-    background: var(--color-bone);
-    color: var(--color-black);
+    background: var(--color-stone);
+    border-top: 2px solid var(--color-gold);
   }
-
-  .pricing .section-head { border-bottom-color: rgba(11, 11, 12, 0.2); }
-
-  .pricing .section-head p { color: var(--color-muted-on-light); }
 
   .tiers {
     display: grid;
@@ -607,7 +580,7 @@
 
   .tier {
     padding: 24px 26px 28px;
-    border: 1px solid rgba(11, 11, 12, 0.25);
+    border: 1px solid var(--color-line-strong);
     border-left-width: 0;
   }
 
@@ -617,7 +590,7 @@
 
   .tier-name {
     margin: 0;
-    color: var(--color-muted-on-light);
+    color: var(--color-muted);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -650,7 +623,7 @@
   .tier-list li {
     position: relative;
     padding-left: 16px;
-    color: var(--color-muted-on-light);
+    color: var(--color-muted);
     font-size: 13px;
     line-height: 1.45;
   }
@@ -668,8 +641,8 @@
   .tier-note {
     margin: 26px 0 0;
     padding-top: 16px;
-    border-top: 1px solid rgba(11, 11, 12, 0.2);
-    color: var(--color-muted-on-light);
+    border-top: 1px solid var(--color-line);
+    color: var(--color-muted);
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -907,6 +880,47 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
   }
+
+  .section-cta {
+    display: inline-block;
+    margin-top: 26px;
+    color: var(--color-gold);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--motion-fast) var(--motion-ease);
+  }
+
+  .section-cta:hover { border-bottom-color: var(--color-gold); }
+
+  .testimonial-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 22px;
+    margin-top: 30px;
+  }
+
+  .testimonial-actions .section-cta { margin-top: 0; }
+
+  /* About page story */
+  .story {
+    padding: 56px 0 64px;
+    background: var(--color-stone);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .story .prose h2 {
+    margin-top: 36px;
+    font-size: 30px;
+  }
+
+  .story .prose p { font-size: 17px; }
+
+  .story .prose h2:first-child { margin-top: 0; }
 
   /* Footer */
   .site-foot {

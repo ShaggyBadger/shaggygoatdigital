@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+  {% include "partials/site_nav.html" %}
+
+  <main>
+    <section class="page-head">
+      <div class="wrap">
+        <p class="label gold">{{ page.eyebrow }}</p>
+        <h1>{{ page.title }}</h1>
+        <p class="page-lede">{{ page.intro }}</p>
+      </div>
+    </section>
+
+    <section class="work">
+      <div class="wrap">
+        {% for item in page.items.all %}
+          <article class="work-card{% if not item.image %} work-card--text{% endif %}">
+            {% if item.image %}
+              <div class="work-shot">
+                {% image item.image width-900 as shot %}
+                <img src="{{ shot.url }}"
+                     width="{{ shot.width }}" height="{{ shot.height }}"
+                     alt="{{ item.client_label }}, on a laptop screen"
+                     loading="lazy">
+              </div>
+            {% endif %}
+
+            <div class="work-copy">
+              <p class="label gold">{{ item.client_label }}</p>
+              <h2>{{ item.project_title }}</h2>
+
+              <dl class="work-facts">
+                <div>
+                  <dt>The problem</dt>
+                  <dd>{{ item.problem }}</dd>
+                </div>
+                <div>
+                  <dt>What we built</dt>
+                  <dd>{{ item.built }}</dd>
+                </div>
+                <div>
+                  <dt>What changed</dt>
+                  <dd>{{ item.outcome }}</dd>
+                </div>
+              </dl>
+
+              {% if item.quote %}
+                <blockquote class="work-quote">
+                  “{{ item.quote }}”
+                  {% if item.quote_author %}<cite>{{ item.quote_author }}</cite>{% endif %}
+                </blockquote>
+              {% endif %}
+
+              {% if item.url %}
+                <a class="btn btn-outline" href="{{ item.url }}" target="_blank" rel="noopener">Visit the site</a>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="wrap cta-inner">
+        <h2>{{ page.cta_heading }}</h2>
+        <p>{{ page.cta_body }}</p>
+        <div class="cta-actions">
+          <a class="btn" href="{{ page.cta_url }}">{{ page.cta_label }}</a>
+          <span class="cta-note">{{ page.cta_note }}</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/site_footer.html" %}
+{% endblock %}

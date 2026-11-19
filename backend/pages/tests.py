@@ -1,7 +1,7 @@
 from django.core.management import call_command
 from django.test import TestCase
 
-from pages.models import ContentPage, ProcessPage
+from pages.models import AboutPage, ContentPage, PortfolioPage, ProcessPage
 
 
 class PrivacyPageTests(TestCase):
@@ -52,3 +52,48 @@ class ProcessPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "free")
         self.assertContains(response, "you keep the file")
+
+
+class PortfolioPageTests(TestCase):
+    def test_seed_command_creates_the_page_and_project(self):
+        call_command("seed_portfolio_page", verbosity=0)
+        call_command("seed_portfolio_page", verbosity=0)
+
+        page = PortfolioPage.objects.get(slug="sites-weve-built")
+        self.assertEqual(page.items.count(), 1)
+
+        response = self.client.get("/sites-weve-built/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "GrannyCoded")
+        self.assertContains(response, "Visit the site")
+
+    def test_homepage_links_to_the_page(self):
+        call_command("seed_portfolio_page", verbosity=0)
+
+        response = self.client.get("/")
+
+        self.assertContains(response, 'href="/sites-weve-built/"', count=4)
+
+
+class AboutPageTests(TestCase):
+    def test_seed_command_creates_the_page_and_team(self):
+        call_command("seed_about_page", verbosity=0)
+        call_command("seed_about_page", verbosity=0)
+
+        page = AboutPage.objects.get(slug="about")
+        self.assertEqual(page.team_members.count(), 2)
+
+        response = self.client.get("/about/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Why we started")
+        self.assertContains(response, "Josh Ballard")
+        self.assertContains(response, "Creative director")
+        self.assertContains(response, "North Carolina")
+
+    def test_homepage_no_longer_carries_the_team(self):
+        call_command("seed_about_page", verbosity=0)
+
+        response = self.client.get("/")
+
+        self.assertNotContains(response, "Leah Ballard")
+        self.assertContains(response, 'href="/about/"', count=3)

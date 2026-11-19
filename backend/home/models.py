@@ -9,7 +9,7 @@ from wagtail.models import Orderable, Page
 from .services import notify_contact_submission
 
 CONTACT_NEED_CHOICES = [
-    ("brochure", "A brochure site"),
+    ("brochure", "A starter site"),
     ("shop", "A shop or booking"),
     ("not-sure", "Not sure yet"),
 ]
@@ -41,7 +41,7 @@ class HomePage(Page):
     hero_price_line = RichTextField(
         features=["bold"],
         default=(
-            "<p>Brochure sites from <strong>$500</strong>. Maintenance "
+            "<p>Starter sites from <strong>$500</strong>. Maintenance "
             "<strong>$50 a month</strong>. Custom work quoted after we talk.</p>"
         ),
     )
@@ -63,15 +63,14 @@ class HomePage(Page):
     )
     pain_intro = models.TextField(
         default=(
-            "Anyone can. Wix, Squarespace, and a weekend will get you a site. "
-            "What that weekend actually costs is the part nobody mentions."
+            "Anyone can. Wix, Squarespace, and a weekend will get you a site."
         ),
     )
     pain_footnote = models.CharField(
         max_length=240,
         default=(
-            "That's the job. We do it, and you get a site that works in a "
-            "customer's hand."
+            "A goat can climb a wall. You still wouldn't hire it to build the "
+            "house."
         ),
     )
 
@@ -82,15 +81,9 @@ class HomePage(Page):
     )
     services_footnote = models.TextField(
         default=(
-            "If two of those sound like your week, start with a brochure site. "
-            "We'll tell you when you need the rest."
+            "If two of those sound like your week, start small and grow into "
+            "the rest. We'll tell you when you actually need it."
         ),
-    )
-
-    work_heading = models.CharField(max_length=80, default="Selected work")
-    work_intro = models.CharField(
-        max_length=200,
-        default="Live sites, not mockups. Open this one on your phone.",
     )
 
     pricing_heading = models.CharField(max_length=80, default="What it costs")
@@ -129,29 +122,6 @@ class HomePage(Page):
     testimonial_author = models.CharField(max_length=80, default="Hannah")
     testimonial_company = models.CharField(max_length=80, default="GrannyCoded")
     testimonial_company_url = models.URLField(default="https://grannycoded.com")
-
-    manifesto_heading = models.CharField(max_length=80, default="Why the goat?")
-    manifesto_body = RichTextField(
-        features=["bold", "italic", "link"],
-        default=(
-            "<p>Goats climb what they shouldn't and stand where they shouldn't. "
-            "They also refuse to fall off. We build websites with the same "
-            "temperament: sure-footed, stubborn, and hard to knock down.</p>"
-            "<p>The work is the work. We show up, build it, and answer the phone.</p>"
-        ),
-    )
-    manifesto_tagline = models.CharField(
-        max_length=160,
-        default="The goat is the mascot. The backbone is the product.",
-    )
-
-    team_heading = models.CharField(max_length=80, default="Who we are")
-    team_intro = models.TextField(
-        default=(
-            "Two people in North Carolina. You talk to the people doing the work, "
-            "from the first call to the last fix."
-        ),
-    )
 
     contact_heading = models.CharField(
         max_length=120,
@@ -210,14 +180,6 @@ class HomePage(Page):
         ),
         MultiFieldPanel(
             [
-                FieldPanel("work_heading"),
-                FieldPanel("work_intro"),
-                InlinePanel("work_items", label="Project", min_num=1, max_num=6),
-            ],
-            heading="Selected work",
-        ),
-        MultiFieldPanel(
-            [
                 FieldPanel("pricing_heading"),
                 FieldPanel("pricing_intro"),
                 InlinePanel("price_tiers", label="Tier", min_num=1, max_num=3),
@@ -236,22 +198,6 @@ class HomePage(Page):
                 FieldPanel("testimonial_company_url"),
             ],
             heading="Testimonials",
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("manifesto_heading"),
-                FieldPanel("manifesto_body"),
-                FieldPanel("manifesto_tagline"),
-            ],
-            heading="Why the goat",
-        ),
-        MultiFieldPanel(
-            [
-                FieldPanel("team_heading"),
-                FieldPanel("team_intro"),
-                InlinePanel("team_members", label="Person", min_num=1, max_num=4),
-            ],
-            heading="Who we are",
         ),
         MultiFieldPanel(
             [
@@ -347,52 +293,6 @@ class PainPoint(Orderable):
         return self.title
 
 
-class WorkItem(Orderable):
-    """One project in the selected-work section."""
-
-    page = ParentalKey(
-        HomePage,
-        on_delete=models.CASCADE,
-        related_name="work_items",
-    )
-    client_label = models.CharField(
-        max_length=120,
-        help_text="Client and build type, such as GrannyCoded / Custom storefront.",
-    )
-    project_title = models.CharField(max_length=120)
-    problem = models.TextField(help_text="What the client was stuck with.")
-    built = models.TextField(help_text="What you built, in plain language.")
-    outcome = models.TextField(help_text="What changed for the client.")
-    url = models.URLField(blank=True, help_text="The live site.")
-    image = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-    quote = models.TextField(
-        blank=True,
-        help_text="Optional. Filling this in replaces a separate testimonial.",
-    )
-    quote_author = models.CharField(max_length=120, blank=True)
-
-    panels = [
-        FieldPanel("client_label"),
-        FieldPanel("project_title"),
-        FieldPanel("problem"),
-        FieldPanel("built"),
-        FieldPanel("outcome"),
-        FieldPanel("url"),
-        FieldPanel("image"),
-        FieldPanel("quote"),
-        FieldPanel("quote_author"),
-    ]
-
-    def __str__(self) -> str:
-        return f"{self.client_label} — {self.project_title}"
-
-
 class PriceTier(Orderable):
     """One published price tier."""
 
@@ -415,36 +315,6 @@ class PriceTier(Orderable):
 
     def __str__(self) -> str:
         return f"{self.name} — {self.price}"
-
-
-class TeamMember(Orderable):
-    """One person in the who-we-are section."""
-
-    page = ParentalKey(
-        HomePage,
-        on_delete=models.CASCADE,
-        related_name="team_members",
-    )
-    name = models.CharField(max_length=80)
-    role = models.CharField(max_length=80)
-    bio = models.TextField()
-    photo = models.ForeignKey(
-        "wagtailimages.Image",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    panels = [
-        FieldPanel("name"),
-        FieldPanel("role"),
-        FieldPanel("bio"),
-        FieldPanel("photo"),
-    ]
-
-    def __str__(self) -> str:
-        return f"{self.name} — {self.role}"
 
 
 class ContactSubmission(models.Model):

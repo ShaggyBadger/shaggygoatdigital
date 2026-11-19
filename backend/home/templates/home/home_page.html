@@ -21,10 +21,6 @@
         <div class="hero-bg hero-bg--empty" aria-hidden="true"></div>
       {% endif %}
 
-      <div class="hero-cliff" aria-hidden="true">
-        {% include "partials/goat-cliff.svg" %}
-      </div>
-
       <div class="wrap hero-inner">
         <h1>{{ page.hero_heading }}</h1>
         <div class="hero-copy">
@@ -41,7 +37,7 @@
 
     {% include "home/sections/pain_points.html" %}
 
-    <section class="services">
+    <section class="services" id="services">
       <div class="wrap">
         <div class="section-head">
           <h2>{{ page.services_heading }}</h2>
@@ -59,10 +55,10 @@
         </div>
 
         <p class="svc-foot">{{ page.services_footnote }}</p>
+        <a class="section-cta" href="#contact">Start with what you need most →</a>
       </div>
     </section>
 
-    {% include "home/sections/work.html" %}
     {% include "home/sections/pricing.html" %}
 
     <section class="testimonials" id="testimonials">
@@ -85,21 +81,13 @@
             <meta itemprop="name" content="Shaggy Goat Digital, LLC">
           </div>
         </figure>
-      </div>
-    </section>
 
-    <section class="manifesto" id="why">
-      <div class="wrap manifesto-grid">
-        <div class="manifesto-copy">
-          <h2>{{ page.manifesto_heading }}</h2>
-          {{ page.manifesto_body|richtext }}
-          <p class="tagline">{{ page.manifesto_tagline }}</p>
+        <div class="testimonial-actions">
+          <a class="btn btn-outline" href="/sites-weve-built/">See the site</a>
+          <a class="section-cta" href="#contact">Want one that does this for you? →</a>
         </div>
-        <svg class="manifesto-goat" aria-hidden="true"><use href="#goat-mark"/></svg>
       </div>
     </section>
-
-    {% include "home/sections/team.html" %}
 
     <section class="contact" id="contact">
       <div class="wrap contact-grid">

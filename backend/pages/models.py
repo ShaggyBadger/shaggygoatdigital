@@ -7,6 +7,40 @@ from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page
 
 
+def closing_cta_panel():
+    """The admin panel for the shared closing call to action."""
+    return MultiFieldPanel(
+        [
+            FieldPanel("cta_heading"),
+            FieldPanel("cta_body"),
+            FieldPanel("cta_label"),
+            FieldPanel("cta_url"),
+            FieldPanel("cta_note"),
+        ],
+        heading="Closing call to action",
+    )
+
+
+class ClosingCtaMixin(models.Model):
+    """Copy for the closing band shared by the interior pages."""
+
+    cta_heading = models.CharField(
+        max_length=120, default="Tell us what you're running"
+    )
+    cta_body = models.TextField(
+        default=(
+            "One sentence is enough. We'll reply with questions, a rough price, "
+            "and a straight answer."
+        )
+    )
+    cta_label = models.CharField(max_length=80, default="Start a project")
+    cta_url = models.CharField(max_length=200, default="/#contact")
+    cta_note = models.CharField(max_length=80, default="No scapegoats.")
+
+    class Meta:
+        abstract = True
+
+
 class ProcessStep(Orderable):
     """One numbered step in the build."""
 
@@ -58,7 +92,7 @@ class FaqItem(Orderable):
     ]
 
 
-class ProcessPage(Page):
+class ProcessPage(ClosingCtaMixin, Page):
     """How the work happens: the steps, the stack, what the client owns."""
 
     max_count = 1
@@ -126,19 +160,6 @@ class ProcessPage(Page):
         default="If yours isn't here, ask it. We answer the same day.",
     )
 
-    cta_heading = models.CharField(
-        max_length=120, default="Tell us what you're running"
-    )
-    cta_body = models.TextField(
-        default=(
-            "One sentence is enough. We'll reply with questions, a rough price, "
-            "and a straight answer."
-        )
-    )
-    cta_label = models.CharField(max_length=80, default="Start a project")
-    cta_url = models.CharField(max_length=200, default="/#contact")
-    cta_note = models.CharField(max_length=80, default="No scapegoats.")
-
     content_panels = Page.content_panels + [
         MultiFieldPanel(
             [
@@ -187,16 +208,7 @@ class ProcessPage(Page):
             ],
             heading="FAQ",
         ),
-        MultiFieldPanel(
-            [
-                FieldPanel("cta_heading"),
-                FieldPanel("cta_body"),
-                FieldPanel("cta_label"),
-                FieldPanel("cta_url"),
-                FieldPanel("cta_note"),
-            ],
-            heading="Closing call to action",
-        ),
+        closing_cta_panel(),
     ]
 
     promote_panels = Page.promote_panels
@@ -228,3 +240,186 @@ class ContentPage(Page):
     ]
 
     template = "pages/content_page.html"
+
+
+class PortfolioItem(Orderable):
+    """One project on the Sites we've built page."""
+
+    page = ParentalKey(
+        "pages.PortfolioPage",
+        on_delete=models.CASCADE,
+        related_name="items",
+    )
+    client_label = models.CharField(
+        max_length=120,
+        help_text="Client and build type, such as GrannyCoded / Custom storefront.",
+    )
+    project_title = models.CharField(max_length=120)
+    problem = models.TextField(help_text="What the client was stuck with.")
+    built = models.TextField(help_text="What you built, in plain language.")
+    outcome = models.TextField(help_text="What changed for the client.")
+    url = models.URLField(blank=True, help_text="The live site.")
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    quote = models.TextField(blank=True)
+    quote_author = models.CharField(max_length=120, blank=True)
+
+    panels = [
+        FieldPanel("client_label"),
+        FieldPanel("project_title"),
+        FieldPanel("problem"),
+        FieldPanel("built"),
+        FieldPanel("outcome"),
+        FieldPanel("url"),
+        FieldPanel("image"),
+        FieldPanel("quote"),
+        FieldPanel("quote_author"),
+    ]
+
+    def __str__(self) -> str:
+        return f"{self.client_label} — {self.project_title}"
+
+
+class PortfolioPage(ClosingCtaMixin, Page):
+    """The work: one card per project, with the story behind it."""
+
+    max_count = 1
+
+    eyebrow = models.CharField(max_length=60, default="The work")
+    intro = models.TextField(
+        default=(
+            "Live sites, not mockups. Open any of them on your phone and see how "
+            "they behave."
+        )
+    )
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("eyebrow"),
+                FieldPanel("intro"),
+                InlinePanel("items", label="Project", min_num=1, max_num=12),
+            ],
+            heading="Projects",
+        ),
+        closing_cta_panel(),
+    ]
+
+    template = "pages/portfolio_page.html"
+
+
+class TeamMember(Orderable):
+    """One person on the About page."""
+
+    page = ParentalKey(
+        "pages.AboutPage",
+        on_delete=models.CASCADE,
+        related_name="team_members",
+    )
+    name = models.CharField(max_length=80)
+    role = models.CharField(max_length=80)
+    bio = models.TextField()
+    photo = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("role"),
+        FieldPanel("bio"),
+        FieldPanel("photo"),
+    ]
+
+    def __str__(self) -> str:
+        return f"{self.name} — {self.role}"
+
+
+class AboutPage(ClosingCtaMixin, Page):
+    """Who we are, and why the business exists."""
+
+    max_count = 1
+
+    eyebrow = models.CharField(max_length=60, default="About")
+    intro = models.TextField(
+        default=(
+            "Two people in North Carolina, building the websites we kept wishing "
+            "our own neighbors had."
+        )
+    )
+    story_heading = models.CharField(max_length=80, default="Why we started")
+    story_body = RichTextField(
+        default=(
+            "<p>We kept running into the same thing. A good electrician, "
+            "recommended by three people, with a phone number on a Facebook page "
+            "and nothing else. A plumber whose site was built a decade ago and "
+            "falls apart on a phone. Someone who does beautiful work and is "
+            "invisible unless you already know their name.</p>"
+            "<p>So you do the only thing you can: make a list of numbers, call "
+            "down it, and reach the company with the ad budget instead. You pay "
+            "more, and half the time you get somebody who acts like the call is "
+            "an inconvenience.</p>"
+            "<p>A business like that doesn't need twenty pages and a content "
+            "team. It needs a site that says what it does, where it works, when "
+            "it's open, and how to reach a human. Then it needs to keep working "
+            "after launch.</p>"
+        ),
+        features=["bold", "italic", "link", "h2", "h3"],
+    )
+    mission_heading = models.CharField(max_length=80, default="What we're here for")
+    mission_body = RichTextField(
+        default=(
+            "<p><strong>Vision:</strong> every good local business easy to find, "
+            "easy to understand, and easy to call.</p>"
+            "<p><strong>Mission:</strong> build small, fast, honest websites for "
+            "businesses that plan to be around a while, and stay on the hook "
+            "after launch.</p>"
+        ),
+        features=["bold", "italic", "link"],
+    )
+    goat_heading = models.CharField(max_length=80, default="Why a goat?")
+    goat_body = RichTextField(
+        default=(
+            "<p>Goats climb what they shouldn't and stand where they shouldn't. "
+            "They also refuse to fall off. We build websites with the same "
+            "temperament: sure-footed, stubborn, and hard to knock down.</p>"
+            "<p>The work is the work. We show up, build it, and answer the phone.</p>"
+            "<p><em>The goat is the mascot. The backbone is the product.</em></p>"
+        ),
+        features=["bold", "italic", "link"],
+    )
+    team_heading = models.CharField(max_length=80, default="Who we are")
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("eyebrow"),
+                FieldPanel("intro"),
+                FieldPanel("story_heading"),
+                FieldPanel("story_body"),
+                FieldPanel("mission_heading"),
+                FieldPanel("mission_body"),
+                FieldPanel("goat_heading"),
+                FieldPanel("goat_body"),
+            ],
+            heading="Story",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("team_heading"),
+                InlinePanel("team_members", label="Person", min_num=1, max_num=6),
+            ],
+            heading="Who we are",
+        ),
+        closing_cta_panel(),
+    ]
+
+    template = "pages/about_page.html"
