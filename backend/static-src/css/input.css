@@ -265,6 +265,29 @@
     padding: 46px 0 54px;
   }
 
+  /* The climbing goat: desktop only, tucked into the left gutter. */
+  .hero-cliff { display: none; }
+
+  @media (min-width: 1200px) {
+    .hero-cliff {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      display: block;
+      width: 200px;
+      color: var(--color-gold);
+      pointer-events: none;
+    }
+
+    .hero-cliff svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .hero-inner { padding-left: 210px; }
+  }
+
   .hero h1 {
     max-width: 13ch;
     margin: 0 0 26px;

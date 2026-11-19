@@ -25,6 +25,7 @@
     "backend/templates/base.html",
     "backend/templates/partials/site_nav.html",
     "backend/templates/partials/site_footer.html",
+    "backend/templates/partials/goat-cliff.svg",
     "instructions/completed_tasks/2026-11-19-homepage-sales-sections.md"
   ],
   "validation": [

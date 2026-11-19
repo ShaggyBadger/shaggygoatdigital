@@ -45,6 +45,7 @@ class HomePageTests(TestCase):
         self.assertContains(response, 'rel="canonical"')
         self.assertContains(response, 'href="/#testimonials"')
         self.assertContains(response, 'href="/#work"')
+        self.assertContains(response, 'class="hero-cliff"')
 
     def test_seed_creates_three_service_cards(self):
         self.assertEqual(self.page.service_cards.count(), 3)
