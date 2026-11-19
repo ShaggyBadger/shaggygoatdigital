@@ -35,6 +35,8 @@ class HomePageTests(TestCase):
         self.assertContains(response, "I sent over product photos")
         self.assertContains(response, "Josh Ballard")
         self.assertContains(response, "Leah Ballard")
+        self.assertContains(response, "Creative director")
+        self.assertContains(response, "statement of work")
         self.assertContains(response, "North Carolina")
         self.assertContains(response, "No scapegoats.")
         self.assertContains(response, 'itemtype="https://schema.org/Review"')

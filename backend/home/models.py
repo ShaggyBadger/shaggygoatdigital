@@ -96,9 +96,10 @@ class HomePage(Page):
     pricing_heading = models.CharField(max_length=80, default="What it costs")
     pricing_intro = models.TextField(
         default=(
-            "Fixed prices, published before we talk. Every project starts with a "
-            "written scope, so the number in the scope is the number on the "
-            "invoice."
+            "Fixed prices, published before we talk. Every project starts with two "
+            "documents: an agreement covering who does what and who owns what, and "
+            "a statement of work covering scope, price, and dates. The number in "
+            "the statement of work is the number on the invoice."
         ),
     )
     pricing_note = models.CharField(

@@ -7,6 +7,8 @@
     "backend/home/migrations/0009_remove_homepage_pricing_amount_and_more.py",
     "backend/home/migrations/0010_seed_homepage_sections.py",
     "backend/home/migrations/0011_price_note.py",
+    "backend/home/migrations/0012_grannycoded_case_study.py",
+    "backend/home/migrations/0013_alter_homepage_pricing_intro.py",
     "backend/home/templatetags/home_tags.py",
     "backend/home/templates/home/home_page.html",
     "backend/home/templates/home/sections/",
