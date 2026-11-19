@@ -63,7 +63,9 @@ if not DEBUG:
 
 INSTALLED_APPS = [
     "home",
+    "pages",
     "wagtail.contrib.forms",
+    "wagtail.contrib.sitemaps",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
     "wagtail.sites",
@@ -83,6 +85,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.postgres",
+    "django.contrib.sitemaps",
     "django.contrib.staticfiles",
 ]
 

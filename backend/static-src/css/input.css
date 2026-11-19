@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./tokens.css";
+@import "./process.css";
 
 @source "../../templates";
 @source "../../home/templates";
@@ -24,6 +25,18 @@
   ::selection { background: var(--color-gold); color: var(--color-black); }
 
   a { color: inherit; }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
 
   .wrap {
     width: min(var(--layout-max), calc(100% - var(--layout-gutter)));
@@ -132,6 +145,75 @@
 
   .nav-links a { text-decoration: none; }
   .nav-links a:hover { color: var(--color-ink); }
+
+  /* Mobile menu: a native <details> disclosure, hidden at desktop widths. */
+  .nav-menu { display: none; }
+
+  .nav-toggle {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--color-line-strong);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .nav-toggle::-webkit-details-marker { display: none; }
+
+  .nav-bars,
+  .nav-bars::before,
+  .nav-bars::after {
+    width: 18px;
+    height: 1px;
+    background: var(--color-ink);
+  }
+
+  .nav-bars { position: relative; }
+
+  .nav-bars::before,
+  .nav-bars::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    transition: transform var(--motion-fast) var(--motion-ease);
+  }
+
+  .nav-bars::before { transform: translateY(-6px); }
+  .nav-bars::after { transform: translateY(6px); }
+
+  .nav-menu[open] .nav-bars { background: transparent; }
+  .nav-menu[open] .nav-bars::before { transform: rotate(45deg); }
+  .nav-menu[open] .nav-bars::after { transform: rotate(-45deg); }
+
+  .nav-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: grid;
+    background: var(--color-stone);
+    border-bottom: 2px solid var(--color-gold);
+  }
+
+  .nav-panel > a {
+    padding: 17px 20px;
+    border-top: 1px solid var(--color-line);
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .nav-panel > a:hover { color: var(--color-gold); }
+
+  .nav-panel-cta {
+    padding: 18px 20px 22px;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .nav-panel-cta .btn { width: 100%; }
 
   /* Hero */
   .hero {
@@ -393,52 +475,42 @@
   }
 
   /* Portfolio */
-  .portfolio {
-    padding: 66px 0 68px;
+  .testimonials {
+    padding: 66px 0 72px;
     background: var(--color-black);
   }
 
-  .portfolio-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 56px;
-    align-items: start;
-    margin-top: 34px;
-  }
-
-  .portfolio-lead p {
-    max-width: 46ch;
-    margin: 12px 0 24px;
-    color: var(--color-muted);
-    font-size: 16px;
-  }
-
-  .portfolio-quote {
-    margin: 0;
-    padding-left: 24px;
+  .testimonial {
+    max-width: 900px;
+    margin: 38px auto 0;
+    padding-left: 28px;
     border-left: 1px solid var(--color-gold);
-    font-family: var(--font-quote);
-    font-size: clamp(24px, 2.6vw, 34px);
-    line-height: 1.25;
-    letter-spacing: -0.01em;
   }
 
-  .portfolio-quote cite {
-    display: block;
-    margin-top: 14px;
-    font-family: var(--font-body);
-    font-style: normal;
-    font-size: 11px;
+  .testimonial .label { margin-bottom: 18px; }
+
+  .testimonial-quote {
+    margin: 0 0 24px;
+    font-family: var(--font-quote);
+    font-size: clamp(28px, 3.4vw, 46px);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .testimonial-credit {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-muted);
   }
 
-  .portfolio-quote cite a {
+  .testimonial-credit a {
     color: var(--color-gold);
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-underline-offset: 4px;
   }
 
   /* Manifesto */
@@ -639,6 +711,8 @@
     .wrap { width: calc(100% - var(--layout-gutter-md)); }
 
     .nav-links { display: none; }
+    .nav-menu { display: block; margin-left: 12px; }
+    .nav-inner > .btn { margin-left: auto; }
 
     .hero { min-height: 0; display: block; }
     .hero-bg { width: 100%; }
@@ -697,11 +771,13 @@
 
     .price-inner { grid-template-columns: 1fr; gap: 22px; }
 
-    .portfolio-grid,
     .manifesto-grid,
     .contact-grid { grid-template-columns: 1fr; }
 
-    .portfolio-grid { gap: 28px; }
+    .testimonial {
+      margin-top: 28px;
+      padding-left: 18px;
+    }
     .manifesto { padding: 48px 0 52px; }
     .manifesto-grid { gap: 30px; }
     .manifesto-goat {
@@ -721,12 +797,8 @@
     .word .llc { display: none; }
     .mark { width: 32px; height: 32px; }
     .mark svg { width: 23px; height: 24px; }
-    .site-nav .btn {
-      min-height: 38px;
-      padding: 0 11px;
-      font-size: 12px;
-      white-space: nowrap;
-    }
+    .nav-inner > .btn { display: none; }
+    .nav-menu { margin-left: auto; }
 
     .hero h1 { font-size: 56px; }
     .hero-copy .lede { font-size: 17px; }
@@ -735,7 +807,8 @@
 
     .price-big strong { font-size: 72px; }
 
-    .portfolio-quote { font-size: 24px; }
+    .testimonial-quote { font-size: 26px; line-height: 1.25; }
+    .testimonial-credit { font-size: 11px; }
 
     .manifesto-copy { padding-left: 18px; }
     .manifesto .tagline { font-size: 21px; }

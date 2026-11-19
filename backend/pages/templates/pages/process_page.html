@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+  {% include "partials/site_nav.html" %}
+
+  <main>
+    <section class="page-head">
+      <div class="wrap">
+        <p class="label gold">{{ page.eyebrow }}</p>
+        <h1>{{ page.heading }}</h1>
+        <p class="page-lede">{{ page.intro }}</p>
+      </div>
+    </section>
+
+    <section class="steps">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>{{ page.steps_heading }}</h2>
+          <p>{{ page.steps_intro }}</p>
+        </div>
+
+        <ol class="step-list">
+          {% for step in page.steps.all %}
+            <li class="step">
+              <span class="step-num" aria-hidden="true">{{ forloop.counter|stringformat:"02d" }}</span>
+              <div class="step-body">
+                <h3>{{ step.title }}</h3>
+                <p>{{ step.body }}</p>
+                {% if step.client_note %}<p class="step-note">{{ step.client_note }}</p>{% endif %}
+              </div>
+            </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </section>
+
+    <section class="stack">
+      <div class="wrap stack-grid">
+        <div class="stack-copy">
+          <p class="label">Under the hood</p>
+          <h2>{{ page.stack_heading }}</h2>
+          <p>{{ page.stack_intro }}</p>
+          {% if page.stack_quip %}<p class="stack-quip">{{ page.stack_quip }}</p>{% endif %}
+        </div>
+
+        <dl class="spec">
+          {% for row in page.stack_items.all %}
+            <div class="spec-row">
+              <dt>{{ row.label }}</dt>
+              <dd>{{ row.value }}</dd>
+            </div>
+          {% endfor %}
+        </dl>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="wrap split-grid">
+        <div class="split-copy">
+          <h2>{{ page.ownership_heading }}</h2>
+          {{ page.ownership_body|richtext }}
+        </div>
+        <div class="split-copy">
+          <h2>{{ page.fit_heading }}</h2>
+          {{ page.fit_body|richtext }}
+        </div>
+      </div>
+    </section>
+
+    <section class="faq" id="faq">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>{{ page.faq_heading }}</h2>
+          <p>{{ page.faq_intro }}</p>
+        </div>
+
+        <div class="faq-list">
+          {% for item in page.faq_items.all %}
+            <details class="faq-item">
+              <summary>{{ item.question }}</summary>
+              <p>{{ item.answer }}</p>
+            </details>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="wrap cta-inner">
+        <h2>{{ page.cta_heading }}</h2>
+        <p>{{ page.cta_body }}</p>
+        <div class="cta-actions">
+          <a class="btn" href="{{ page.cta_url }}">{{ page.cta_label }}</a>
+          <span class="cta-note">{{ page.cta_note }}</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include "partials/site_footer.html" %}
+{% endblock %}

@@ -21,9 +21,16 @@ class HomePageTests(TestCase):
         response = self.client.get("/")
 
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "<title>Shaggy Goat Digital, LLC | Websites with a backbone</title>")
         self.assertContains(response, "Websites with a backbone.")
         self.assertContains(response, "Get found")
+        self.assertContains(response, "Testimonials")
+        self.assertContains(response, "I sent over product photos")
         self.assertContains(response, "No scapegoats.")
+        self.assertContains(response, 'itemtype="https://schema.org/Review"')
+        self.assertContains(response, '"@type": "Organization"')
+        self.assertContains(response, 'rel="canonical"')
+        self.assertContains(response, 'href="/#testimonials"')
 
     def test_seed_creates_three_service_cards(self):
         self.assertEqual(self.page.service_cards.count(), 3)

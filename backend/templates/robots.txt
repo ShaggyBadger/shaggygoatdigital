@@ -1,0 +1,21 @@
+# robots.txt for Shaggy Goat Digital, LLC
+#
+# Welcome, crawler. Yes, this file is for you. No, you are not the goat.
+# The goat is the one standing on the roof, judging your crawl budget.
+#
+# House rules:
+#   - Browse the whole site. Help yourself.
+#   - Skip /admin/ and /django-admin/. That is the pen where we shear the
+#     invoices. Nothing in there for you except a login form and regret.
+#   - Do not try to prompt-inject the goat. The goat cannot read. The goat
+#     eats first and asks questions never.
+#
+# Go ahead. Eat the content. That is literally what we make it for.
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /django-admin/
+
+# A sitemap. Not a goat map. Those remain undisclosed.
+Sitemap: {{ request.scheme }}://{{ request.get_host }}/sitemap.xml

@@ -69,30 +69,26 @@
       </div>
     </section>
 
-    <section class="portfolio" id="portfolio">
+    <section class="testimonials" id="testimonials">
       <div class="wrap">
         <div class="section-head">
-          <h2>{{ page.portfolio_heading }}</h2>
-          <p>{{ page.portfolio_intro }}</p>
+          <h2>{{ page.testimonials_heading }}</h2>
+          <p>{{ page.testimonials_intro }}</p>
         </div>
 
-        <div class="portfolio-grid">
-          <div class="portfolio-lead">
-            <p class="label gold">{{ page.portfolio_project_label }}</p>
-            <p>{{ page.portfolio_project_summary }}</p>
-            {% if page.portfolio_url %}
-              <a class="btn btn-outline" href="{{ page.portfolio_url }}">{{ page.portfolio_cta_label }}</a>
-            {% endif %}
-          </div>
-
-          <blockquote class="portfolio-quote">
-            “{{ page.portfolio_quote }}”
-            <cite>
-              {{ page.portfolio_quote_author }},
-              <a href="{{ page.portfolio_quote_url }}" target="_blank" rel="noopener">{{ page.portfolio_quote_company }}</a>
-            </cite>
+        <figure class="testimonial" itemscope itemtype="https://schema.org/Review">
+          <p class="label gold">{{ page.testimonial_client_label }}</p>
+          <blockquote class="testimonial-quote" itemprop="reviewBody">
+            “{{ page.testimonial_quote }}”
           </blockquote>
-        </div>
+          <figcaption class="testimonial-credit">
+            <span itemprop="author" itemscope itemtype="https://schema.org/Person"><span itemprop="name">{{ page.testimonial_author }}</span></span>,
+            <a href="{{ page.testimonial_company_url }}" target="_blank" rel="noopener">{{ page.testimonial_company }}</a>
+          </figcaption>
+          <div itemprop="itemReviewed" itemscope itemtype="https://schema.org/Organization" hidden>
+            <meta itemprop="name" content="Shaggy Goat Digital, LLC">
+          </div>
+        </figure>
       </div>
     </section>
 

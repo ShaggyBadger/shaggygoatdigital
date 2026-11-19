@@ -85,34 +85,25 @@ class HomePage(Page):
         default="We put it in writing first. We're stubborn that way.",
     )
 
-    portfolio_heading = models.CharField(max_length=80, default="Portfolio")
-    portfolio_intro = models.CharField(
+    testimonials_heading = models.CharField(max_length=80, default="Testimonials")
+    testimonials_intro = models.CharField(
         max_length=200,
-        default="A custom storefront, a catalog, and a client who can run it without us.",
+        default="What it's like to work with us.",
     )
-    portfolio_project_label = models.CharField(
+    testimonial_client_label = models.CharField(
         max_length=120,
         default="GrannyCoded / Custom storefront",
     )
-    portfolio_project_summary = models.TextField(
+    testimonial_quote = models.TextField(
         default=(
-            "Catalog, checkout, and a content system the owner can update herself. "
-            "She adds a piece, it appears. That's the whole point."
+            "I sent over product photos and a rough idea of what I wanted. "
+            "What came back looked like the business I'd been trying to explain "
+            "for years. I can add a piece now without calling anyone."
         ),
     )
-    portfolio_quote = models.TextField(
-        default="I can add a piece without calling anyone.",
-    )
-    portfolio_quote_author = models.CharField(max_length=80, default="Hannah")
-    portfolio_quote_company = models.CharField(max_length=80, default="GrannyCoded")
-    portfolio_quote_url = models.URLField(default="https://grannycoded.com")
-    portfolio_cta_label = models.CharField(
-        max_length=80,
-        default="See the portfolio",
-    )
-    portfolio_url = models.CharField(
-        max_length=200, default="https://grannycoded.com"
-    )
+    testimonial_author = models.CharField(max_length=80, default="Hannah")
+    testimonial_company = models.CharField(max_length=80, default="GrannyCoded")
+    testimonial_company_url = models.URLField(default="https://grannycoded.com")
 
     manifesto_heading = models.CharField(max_length=80, default="Why the goat?")
     manifesto_body = RichTextField(
@@ -186,18 +177,15 @@ class HomePage(Page):
         ),
         MultiFieldPanel(
             [
-                FieldPanel("portfolio_heading"),
-                FieldPanel("portfolio_intro"),
-                FieldPanel("portfolio_project_label"),
-                FieldPanel("portfolio_project_summary"),
-                FieldPanel("portfolio_quote"),
-                FieldPanel("portfolio_quote_author"),
-                FieldPanel("portfolio_quote_company"),
-                FieldPanel("portfolio_quote_url"),
-                FieldPanel("portfolio_cta_label"),
-                FieldPanel("portfolio_url"),
+                FieldPanel("testimonials_heading"),
+                FieldPanel("testimonials_intro"),
+                FieldPanel("testimonial_client_label"),
+                FieldPanel("testimonial_quote"),
+                FieldPanel("testimonial_author"),
+                FieldPanel("testimonial_company"),
+                FieldPanel("testimonial_company_url"),
             ],
-            heading="Portfolio",
+            heading="Testimonials",
         ),
         MultiFieldPanel(
             [
