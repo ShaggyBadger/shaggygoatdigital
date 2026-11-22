@@ -53,7 +53,11 @@
     "/, /how-it-works/, /sites-weve-built/, /about/, /privacy/, /sitemap.xml return 200",
     "Homepage, Sites we\u2019ve built, and About rendered at 1440px; homepage at 390px",
     "Site settings render the nav CTA and footer tagline on every page",
-    "About team photo frames render with placeholders"
+    "About team photo frames render with placeholders",
+    "Pre-launch review in disposable Compose: 21 Django tests and 2 initializer tests passed",
+    "Django check and migration drift check passed",
+    "Four child routes returned 404 after fresh migration and 200 after explicit seeding",
+    "The development image did not contain generated css/site.css"
   ],
   "blockers": [],
   "next_actions": []
