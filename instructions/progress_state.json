@@ -34,7 +34,9 @@
     "Dockerfile.prod",
     "compose.production.yaml",
     "backend/.dockerignore",
-    "instructions/completed_tasks/2026-11-22-production-container.md"
+    "instructions/completed_tasks/2026-11-22-production-container.md",
+    "restart_server.sh",
+    "instructions/completed_tasks/2026-11-22-restart-server.md"
   ],
   "validation": [
     "Local Compose services started",
@@ -52,7 +54,8 @@
     "Repository review passed all 24 Django tests against a fresh local test database and found no migration drift. Review findings cover phone validation, privacy copy, Wagtail draft preservation, and restore atomicity.",
     "Implemented REV-1 through REV-4 and passed all 29 Django tests in an isolated local database. Privacy revision 60 passed Wagtail Preview. Disposable Compose verified successful restore and rollback on failure.",
     "Verified the database transfer round trip and local replacement in disposable PostgreSQL 17, including sequence values, private archives, and refusal of duplicate labels, incorrect confirmation, occupied targets, and corrupt archives.",
-    "Verified the production Compose configuration, Docker image build, Django system check, collected Tailwind CSS, and Gunicorn serving robots.txt with the forwarded HTTPS scheme."
+    "Verified the production Compose configuration, Docker image build, Django system check, collected Tailwind CSS, and Gunicorn serving robots.txt with the forwarded HTTPS scheme.",
+    "Verified first deployment and repeat web recreation with disposable production Compose services, preserving the same Postgres container. Confirmed collected CSS and verified that a migration failure stops before web recreation."
   ],
   "blockers": [
     "Confirm approved media sources",

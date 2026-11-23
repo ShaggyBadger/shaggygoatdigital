@@ -71,28 +71,25 @@ The Postgres bind mount survives `docker compose down -v`.
 
 ## Production on Linode
 
-From the server checkout, set up the production `.env` with `DJANGO_DEBUG=False`,
-the site's host and HTTPS origin, and the production database credentials. Select
-the Compose override in each deployment shell. It requires Compose 2.24.4 or
-later.
+From the Linode checkout, configure the production `.env` with
+`DJANGO_DEBUG=False`, the site's host and HTTPS origin, and the production
+database credentials. Add this line to apply the production override to manual
+Compose commands. The override requires Compose 2.24.4 or later.
 
-```bash
-export COMPOSE_FILE=compose.yaml:compose.production.yaml
-docker compose config --quiet
-docker compose build web
+```dotenv
+COMPOSE_FILE=compose.yaml:compose.production.yaml
 ```
 
 For the first launch using existing Wagtail content, keep the web service
 stopped and follow the [database and media transfer](db/README.md#first-transfer-to-linode)
-before running migrations. After the transfer, or when deploying a later code
-update, run:
+before running the restart script.
 
-```bash
-docker compose run --rm web python manage.py migrate
-docker compose run --rm web python manage.py collectstatic --noinput
-docker compose run --rm web python manage.py check --deploy
-docker compose up -d web
-```
+After the transfer, run `./restart_server.sh` from the Linode checkout. For
+later releases, run `git pull --ff-only origin main` first, then run the same
+script. It selects the production Compose files, builds the web image, waits for
+Postgres, applies migrations, collects static files, and recreates the web
+container. If a preparatory command fails, the script exits before recreating
+the web container. Postgres stays running during ordinary code updates.
 
 The image includes the compiled CSS, and `collectstatic` writes the files the
 host proxy serves at `/static/` to `backend/staticfiles/`. Configure the HTTPS
