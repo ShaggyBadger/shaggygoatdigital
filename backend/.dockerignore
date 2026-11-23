@@ -1,0 +1,15 @@
+*
+!config/
+!home/
+!pages/
+!static/
+!static-src/
+!templates/
+!manage.py
+!package.json
+!package-lock.json
+!requirements.txt
+**/.env*
+**/__pycache__/
+**/*.py[cod]
+static/css/site.css

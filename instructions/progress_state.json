@@ -30,7 +30,11 @@
     "scripts/README.md",
     "db/README.md",
     "README.md",
-    "instructions/completed_tasks/2026-11-22-database-transfer.md"
+    "instructions/completed_tasks/2026-11-22-database-transfer.md",
+    "Dockerfile.prod",
+    "compose.production.yaml",
+    "backend/.dockerignore",
+    "instructions/completed_tasks/2026-11-22-production-container.md"
   ],
   "validation": [
     "Local Compose services started",
@@ -47,7 +51,8 @@
     "Verified the revised GrannyCoded outcome in Wagtail preview revision 52",
     "Repository review passed all 24 Django tests against a fresh local test database and found no migration drift. Review findings cover phone validation, privacy copy, Wagtail draft preservation, and restore atomicity.",
     "Implemented REV-1 through REV-4 and passed all 29 Django tests in an isolated local database. Privacy revision 60 passed Wagtail Preview. Disposable Compose verified successful restore and rollback on failure.",
-    "Verified the database transfer round trip and local replacement in disposable PostgreSQL 17, including sequence values, private archives, and refusal of duplicate labels, incorrect confirmation, occupied targets, and corrupt archives."
+    "Verified the database transfer round trip and local replacement in disposable PostgreSQL 17, including sequence values, private archives, and refusal of duplicate labels, incorrect confirmation, occupied targets, and corrupt archives.",
+    "Verified the production Compose configuration, Docker image build, Django system check, collected Tailwind CSS, and Gunicorn serving robots.txt with the forwarded HTTPS scheme."
   ],
   "blockers": [
     "Confirm approved media sources",

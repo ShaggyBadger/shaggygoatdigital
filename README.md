@@ -5,9 +5,9 @@
 A reusable, Docker-first Django and Wagtail template for client websites, using
 PostgreSQL and Tailwind CSS.
 
-The included Dockerfile and Compose file are for local development. They use
-Django's development server and a Tailwind watcher; production needs a separate
-server command, static-asset build/collection, and production environment.
+The default Compose configuration runs Django and a Tailwind watcher for local
+development. The [production configuration](#production-on-linode) runs
+Gunicorn and builds Tailwind into the web image.
 
 ## Project layout
 
@@ -68,6 +68,38 @@ Django writes rotating logs under `backend/logs/` and sends INFO-and-higher
 output to the container console. The log directory is ignored by Git.
 
 The Postgres bind mount survives `docker compose down -v`.
+
+## Production on Linode
+
+From the server checkout, set up the production `.env` with `DJANGO_DEBUG=False`,
+the site's host and HTTPS origin, and the production database credentials. Select
+the Compose override in each deployment shell. It requires Compose 2.24.4 or
+later.
+
+```bash
+export COMPOSE_FILE=compose.yaml:compose.production.yaml
+docker compose config --quiet
+docker compose build web
+```
+
+For the first launch using existing Wagtail content, keep the web service
+stopped and follow the [database and media transfer](db/README.md#first-transfer-to-linode)
+before running migrations. After the transfer, or when deploying a later code
+update, run:
+
+```bash
+docker compose run --rm web python manage.py migrate
+docker compose run --rm web python manage.py collectstatic --noinput
+docker compose run --rm web python manage.py check --deploy
+docker compose up -d web
+```
+
+The image includes the compiled CSS, and `collectstatic` writes the files the
+host proxy serves at `/static/` to `backend/staticfiles/`. Configure the HTTPS
+proxy to forward application requests to `127.0.0.1:8000` and set
+`X-Forwarded-Proto` from the incoming scheme. For filesystem uploads, serve
+`/media/` from `backend/media/`. The production override uses the same
+`./.pgdata` location as the base configuration.
 
 ## Database choices
 

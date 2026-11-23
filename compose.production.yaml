@@ -1,0 +1,17 @@
+services:
+  web:
+    build:
+      context: ./backend
+      dockerfile: ../Dockerfile.prod
+    command: null
+    ports: !override
+      - "127.0.0.1:8000:8000"
+    volumes: !override
+      - ./backend/staticfiles:/app/backend/staticfiles
+      - ./backend/media:/app/backend/media
+      - ./backend/logs:/app/backend/logs
+    restart: unless-stopped
+  db:
+    restart: unless-stopped
+  tailwind:
+    profiles: ["development"]
