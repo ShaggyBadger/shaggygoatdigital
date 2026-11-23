@@ -60,15 +60,14 @@ docker compose exec web python manage.py test
 docker compose exec web python manage.py makemigrations
 docker compose exec web python manage.py migrate
 docker compose exec tailwind npm run build:css
-./scripts/export_initial_database.sh   # One-time initial-content backup + SCP upload
-docker compose down                    # Stop containers; keep the database volume
+./scripts/db-transfer.sh dump launch   # Write a portable Postgres archive
+docker compose down                    # Stop containers; keep the database files
 ```
 
 Django writes rotating logs under `backend/logs/` and sends INFO-and-higher
 output to the container console. The log directory is ignored by Git.
 
-To remove the local database and all its data, run `docker compose down -v`.
-That command is destructive; do not use it when you need to keep local content.
+The Postgres bind mount survives `docker compose down -v`.
 
 ## Database choices
 
@@ -90,24 +89,15 @@ expected. Inspect it through the container:
 docker compose exec db ls /var/lib/postgresql/data
 ```
 
-Dump and restore without remembering flags:
-
-```sh
-./scripts/db-dump.sh before-a-change
-./scripts/db-restore.sh db/dumps/before-a-change.dump
-```
-
-Both read the database name and user from inside the container, so they cannot
-drift from `.env`. Do not add a `user:` to the `db` service — its entrypoint must
-start as root to take ownership of the mounted directory.
-
-A database dump is not a whole backup: uploaded media lives in object storage.
-Back up the dump and the bucket together.
+Use the [database transfer runbook](db/README.md) for launch restores, local
+snapshots, and Wagtail media. The database commands read the name and user from
+the Compose `db` service. Its entrypoint needs to start as root to take ownership
+of the mounted directory.
 
 ### Default: local Postgres in Docker
 
-Django connects to the `db` Compose service using `DATABASE_HOST=db`. The named
-`postgres_data` volume preserves content when containers stop or are rebuilt.
+Django connects to the `db` Compose service using `DATABASE_HOST=db`. The
+`./.pgdata` bind mount preserves content when containers stop or are rebuilt.
 This is the normal development setup and works before a remote server exists.
 
 ### Optional: a database reached through an SSH tunnel
@@ -144,14 +134,11 @@ You do **not** have to re-enter everything. Choose how to move initial content:
 - **Small amount of content:** deploy the code, then enter approved pages and
   upload images through the live Wagtail admin. The live app saves them to the
   production database and storage; no database tunnel is needed.
-- **Approved launch content already in local Postgres:** while the production
-  database is still empty, make a one-time database backup and restore it to
-  production. `scripts/export_initial_database.sh` prompts for an SSH
-  destination, creates a local dump, and uploads it with `scp`; it does not
-  restore anything remotely or require a database tunnel. Also copy/upload the
-  referenced media files. Before restoring, check for test content, local
-  accounts, and local site/domain settings. This is a launch-time move, not a
-  recurring deployment step.
+- **Approved launch content already in local Postgres:** follow the [launch
+  transfer runbook](db/README.md#first-transfer-to-linode) to dump the database,
+  copy it with SCP, and restore it into an empty production database. Copy the
+  media separately and review test content, local accounts, and Wagtail's site
+  settings before opening traffic.
 - **Production already has content:** do not replace its database with a local
   copy. Move only the selected pages and assets through a deliberate
   Wagtail-aware import, or create them in the live admin.
@@ -189,17 +176,10 @@ Keep production credentials in the production `.env`, never in the starter or a
 committed file. Use the same bucket region where practical to make the object
 copy straightforward.
 
-### Why not synchronize both databases?
+### Developing after launch
 
-Avoid bidirectional local/production database sync. ULIDs can make newly created
-IDs globally unique, but they do not resolve edits to the same record, deletions,
-duplicate pages, or relationships between Wagtail pages, revisions, and media.
-Wagtail's built-in page IDs are integers, so changing all page primary keys to
-ULIDs is not a small or supported starter setting. Use the one-time backup for
-initial launch, production as the live source afterward, and Wagtail-aware
-selective imports if content must be promoted later. If local development needs
-realistic live data, refresh local from a sanitized production snapshot; never
-push that working copy back over production.
+Use [production snapshots to refresh development](db/README.md#development-after-launch).
+Deploy code and migrations independently of Wagtail content.
 
 ## Tailwind CSS
 

@@ -195,13 +195,6 @@ class ProcessPage(ClosingCtaMixin, Page):
         ),
         MultiFieldPanel(
             [
-                FieldPanel("fit_heading"),
-                FieldPanel("fit_body"),
-            ],
-            heading="Fit",
-        ),
-        MultiFieldPanel(
-            [
                 FieldPanel("faq_heading"),
                 FieldPanel("faq_intro"),
                 InlinePanel("faq_items", label="Question"),

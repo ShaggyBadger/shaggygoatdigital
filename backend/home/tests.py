@@ -62,6 +62,20 @@ class HomePageTests(TestCase):
         self.assertEqual(submission.email, "dana@example.com")
         self.assertEqual(submission.need, "brochure")
 
+    def test_contact_phone_renders_text_and_call_actions(self):
+        for url, sms_destination in (
+            ("sms:+15550101234?body=Hello", "+15550101234?body=Hello"),
+            ("tel:+15550101234", "+15550101234"),
+        ):
+            with self.subTest(url=url):
+                self.page.contact_phone_url = url
+                self.page.save(update_fields=["contact_phone_url"])
+
+                response = self.client.get("/")
+
+                self.assertContains(response, f'class="btn" href="sms:{sms_destination}"')
+                self.assertContains(response, 'class="btn" href="tel:+15550101234"')
+
     def test_invalid_email_is_rejected(self):
         data = {**self.form_data, "email": "not-an-email"}
 
@@ -70,6 +84,57 @@ class HomePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Check the form and try again.")
         self.assertEqual(ContactSubmission.objects.count(), 0)
+
+    @override_settings(
+        CONTACT_EMAIL="owner@example.com",
+        EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+    )
+    def test_phone_only_submission_is_saved_and_included_in_notification(self):
+        data = {**self.form_data, "email": "", "phone": "+1 555 010 1234"}
+
+        response = self.client.post("/", data, follow=True)
+
+        self.assertContains(response, "Got it. We")
+        submission = ContactSubmission.objects.get()
+        self.assertEqual(submission.email, "")
+        self.assertEqual(submission.phone, data["phone"])
+        self.assertIn(f"Phone: {data['phone']}", mail.outbox[0].body)
+
+    @override_settings(
+        CONTACT_EMAIL="owner@example.com",
+        EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+    )
+    def test_submission_accepts_email_and_formatted_phone(self):
+        for phone in ("(919) 555-0123", "+44 20 7946 0958", "011 44 20 7946 0958"):
+            with self.subTest(phone=phone):
+                response = self.client.post("/", {**self.form_data, "phone": phone})
+
+                self.assertRedirects(response, "/#contact")
+                submission = ContactSubmission.objects.get(phone=phone)
+                self.assertEqual(submission.email, self.form_data["email"])
+                self.assertIn(f"Phone: {phone}", mail.outbox[-1].body)
+
+    @override_settings(
+        CONTACT_EMAIL="owner@example.com",
+        EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+    )
+    def test_invalid_phone_is_rejected_even_with_valid_email(self):
+        for email, phone in (("", "not a number"), (self.form_data["email"], "123")):
+            with self.subTest(email=email, phone=phone):
+                response = self.client.post("/", {**self.form_data, "email": email, "phone": phone})
+
+                self.assertContains(response, "Enter a valid phone number.")
+                self.assertIn("phone", response.context["form"].errors)
+                self.assertFalse(ContactSubmission.objects.exists())
+                self.assertEqual(len(mail.outbox), 0)
+
+    def test_submission_requires_email_or_phone(self):
+        data = {**self.form_data, "email": "", "phone": " "}
+
+        response = self.client.post("/", data)
+
+        self.assertContains(response, "Enter an email address or phone number.")
+        self.assertFalse(ContactSubmission.objects.exists())
 
     def test_honeypot_submission_is_ignored(self):
         data = {**self.form_data, "website": "https://spam.example"}

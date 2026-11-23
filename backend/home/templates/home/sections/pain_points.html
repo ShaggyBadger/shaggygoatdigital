@@ -1,20 +1,26 @@
 <section class="pain" id="problem">
+  {% with points=page.pain_points.all %}
   <div class="wrap">
     <div class="section-head">
       <h2>{{ page.pain_heading }}</h2>
       <p>{{ page.pain_intro }}</p>
     </div>
 
-    <ul class="pain-list">
-      {% for point in page.pain_points.all %}
-        <li class="pain-item">
-          <h3>{{ point.title }}</h3>
-          <p>{{ point.body }}</p>
-        </li>
-      {% endfor %}
-    </ul>
+    {% if points %}
+      <ul class="pain-list">
+        {% for point in points %}
+          <li class="pain-item">
+            <h3>{{ point.title }}</h3>
+            <p>{{ point.body }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
 
     <p class="pain-foot">{{ page.pain_footnote }}</p>
-    <a class="section-cta" href="#contact">Let us take it from here →</a>
+    {% if points %}
+      <a class="section-cta" href="#contact">Let us take it from here →</a>
+    {% endif %}
   </div>
+  {% endwith %}
 </section>

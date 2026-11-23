@@ -19,11 +19,7 @@
           <article class="work-card{% if not item.image %} work-card--text{% endif %}">
             {% if item.image %}
               <div class="work-shot">
-                {% image item.image width-900 as shot %}
-                <img src="{{ shot.url }}"
-                     width="{{ shot.width }}" height="{{ shot.height }}"
-                     alt="{{ item.client_label }}, on a laptop screen"
-                     loading="lazy">
+                {% srcset_image item.image width-{400,600,900,1200} format-webp sizes="(max-width: 560px) calc(100vw - 32px), (max-width: 900px) calc(100vw - 40px), (max-width: 1184px) calc(52.5vw - 63px), 559px" alt=item.client_label|add:" website screenshot" loading="lazy" %}
               </div>
             {% endif %}
 

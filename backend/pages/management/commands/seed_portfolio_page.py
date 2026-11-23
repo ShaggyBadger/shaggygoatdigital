@@ -1,9 +1,10 @@
 """Create the Sites we've built page and its first project.
 
-Idempotent: re-running only fills missing rows, so admin edits survive.
+Existing pages are refreshed only when explicitly requested.
 """
 
 from django.core.management.base import BaseCommand, CommandError
+from django.db import transaction
 
 from home.models import HomePage
 from pages.models import PortfolioItem, PortfolioPage
@@ -33,13 +34,32 @@ PROJECT = {
 class Command(BaseCommand):
     help = "Create the Sites we've built page below the homepage."
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--refresh",
+            action="store_true",
+            help="Repair missing content on an existing page without unpublished edits.",
+        )
+
+    @transaction.atomic
     def handle(self, *args, **options):
         home = HomePage.objects.first()
         if home is None:
             raise CommandError("No homepage exists to attach the page to.")
 
-        page = PortfolioPage.objects.child_of(home).filter(slug="sites-weve-built").first()
+        page = (
+            PortfolioPage.objects.child_of(home)
+            .filter(slug="sites-weve-built")
+            .select_for_update()
+            .first()
+        )
         created = page is None
+        if not created:
+            if not options["refresh"]:
+                self.stdout.write(f"Already exists: {page.url}")
+                return
+            if page.has_unpublished_changes:
+                raise CommandError(f"{page.url} has unpublished changes. Refresh cancelled.")
 
         if created:
             page = PortfolioPage(

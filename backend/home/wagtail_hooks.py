@@ -15,11 +15,11 @@ class ContactSubmissionViewSet(ModelViewSet):
     menu_icon = "mail"
     menu_order = 200
     add_to_admin_menu = True
-    list_display = ("name", "email", "business", "need", "created_at")
+    list_display = ("name", "email", "phone", "business", "need", "created_at")
     list_filter = ("need",)
-    search_fields = ("name", "email", "business", "message")
+    search_fields = ("name", "email", "phone", "business", "message")
     inspect_view_enabled = True
-    form_fields = ("name", "email", "business", "need", "message")
+    form_fields = ("name", "email", "phone", "business", "need", "message")
 
 
 @hooks.register("register_admin_viewset")

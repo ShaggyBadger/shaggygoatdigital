@@ -10,7 +10,7 @@ from home.models import HomePage
 from pages.models import ContentPage
 
 BODY = """
-<p>Last updated: 19 November 2026.</p>
+<p>Last updated: 22 November 2026.</p>
 
 <h2>Who this covers</h2>
 <p>This is the website of Shaggy Goat Digital, LLC, a web design and development
@@ -21,7 +21,7 @@ us through it.</p>
 <p>What you type into the contact form:</p>
 <ul>
   <li>Your name</li>
-  <li>Your email address</li>
+  <li>Your email address, phone number, or both</li>
   <li>Your business name, if you give it</li>
   <li>The kind of work you are asking about</li>
   <li>Whatever you write in the message field</li>

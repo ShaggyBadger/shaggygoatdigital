@@ -16,7 +16,8 @@ def notify_contact_submission(submission) -> None:
     body = "\n".join(
         [
             f"Name: {submission.name}",
-            f"Email: {submission.email}",
+            f"Email: {submission.email or 'Not provided'}",
+            f"Phone: {submission.phone or 'Not provided'}",
             f"Business: {submission.business or 'Not provided'}",
             f"Needs: {submission.get_need_display()}",
             "",

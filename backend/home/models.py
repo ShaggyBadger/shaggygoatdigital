@@ -10,7 +10,7 @@ from wagtail.models import Orderable, Page
 from .services import notify_contact_submission
 
 CONTACT_NEED_CHOICES = [
-    ("brochure", "A starter site"),
+    ("brochure", "Local Business Site"),
     ("shop", "A shop or booking"),
     ("not-sure", "Not sure yet"),
 ]
@@ -158,7 +158,7 @@ class HomePage(Page):
             [
                 FieldPanel("pain_heading"),
                 FieldPanel("pain_intro"),
-                InlinePanel("pain_points", label="Hassle", min_num=1, max_num=5),
+                InlinePanel("pain_points", label="Hassle", max_num=5),
                 FieldPanel("pain_footnote"),
             ],
             heading="Pain points",
@@ -208,6 +208,17 @@ class HomePage(Page):
 
     class Meta:
         verbose_name = "home page"
+
+    @property
+    def contact_phone_links(self):
+        scheme, _, destination = self.contact_phone_url.strip().partition(":")
+        number = destination.partition("?")[0]
+        if scheme.lower() not in {"sms", "tel"} or not number:
+            return None
+        return {
+            "text": f"sms:{destination if scheme.lower() == 'sms' else number}",
+            "call": f"tel:{number}",
+        }
 
     def serve(self, request, *args, **kwargs):
         """Render the page and accept contact-form submissions."""
@@ -330,7 +341,8 @@ class ContactSubmission(models.Model):
     """A contact-form submission kept in the Wagtail admin."""
 
     name = models.CharField(max_length=120)
-    email = models.EmailField()
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=40, blank=True)
     business = models.CharField(max_length=160, blank=True)
     need = models.CharField(max_length=20, choices=CONTACT_NEED_CHOICES)
     message = models.TextField(blank=True)
@@ -341,4 +353,4 @@ class ContactSubmission(models.Model):
         verbose_name = "contact submission"
 
     def __str__(self) -> str:
-        return f"{self.name} <{self.email}>"
+        return f"{self.name} <{self.email or self.phone}>"

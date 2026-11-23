@@ -1,10 +1,10 @@
 """Create the How-it-works page below the homepage.
 
-Idempotent: running it again only fills in missing rows and republishes, so it
-is safe after a content edit in the Wagtail admin.
+Existing pages are refreshed only when explicitly requested.
 """
 
 from django.core.management.base import BaseCommand, CommandError
+from django.db import transaction
 
 from home.models import HomePage
 from pages.models import FaqItem, ProcessPage, ProcessStep, StackItem
@@ -107,15 +107,29 @@ FAQ = [
 
 
 class Command(BaseCommand):
-    help = "Create or refresh the How-it-works page below the homepage."
+    help = "Create the How-it-works page below the homepage."
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--refresh",
+            action="store_true",
+            help="Repair missing content on an existing page without unpublished edits.",
+        )
+
+    @transaction.atomic
     def handle(self, *args, **options):
         home = HomePage.objects.first()
         if home is None:
             raise CommandError("No homepage exists to attach the page to.")
 
-        page = ProcessPage.objects.child_of(home).first()
+        page = ProcessPage.objects.child_of(home).select_for_update().first()
         created = page is None
+        if not created:
+            if not options["refresh"]:
+                self.stdout.write(f"Already exists: {page.url}")
+                return
+            if page.has_unpublished_changes:
+                raise CommandError(f"{page.url} has unpublished changes. Refresh cancelled.")
         if created:
             page = ProcessPage(
                 title="How this works",

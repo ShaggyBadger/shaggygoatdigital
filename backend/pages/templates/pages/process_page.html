@@ -27,7 +27,15 @@
               <div class="step-body">
                 <h3>{{ step.title }}</h3>
                 <p>{{ step.body }}</p>
-                {% if step.client_note %}<p class="step-note">{{ step.client_note }}</p>{% endif %}
+                {% if step.client_note %}
+                  <p class="step-note">
+                    {% if forloop.first %}
+                      <a href="/#contact" class="underline">{{ step.client_note }}</a>
+                    {% else %}
+                      {{ step.client_note }}
+                    {% endif %}
+                  </p>
+                {% endif %}
               </div>
             </li>
           {% endfor %}
@@ -55,16 +63,10 @@
       </div>
     </section>
 
-    <section class="split">
-      <div class="wrap split-grid">
-        <div class="split-copy">
-          <h2>{{ page.ownership_heading }}</h2>
-          {{ page.ownership_body|richtext }}
-        </div>
-        <div class="split-copy">
-          <h2>{{ page.fit_heading }}</h2>
-          {{ page.fit_body|richtext }}
-        </div>
+    <section class="ownership">
+      <div class="wrap">
+        <h2>{{ page.ownership_heading }}</h2>
+        {{ page.ownership_body|richtext }}
       </div>
     </section>
 
@@ -92,6 +94,7 @@
         <p>{{ page.cta_body }}</p>
         <div class="cta-actions">
           <a class="btn" href="{{ page.cta_url }}">{{ page.cta_label }}</a>
+          <a class="cta-secondary" href="/sites-weve-built/">Sites we've built</a>
           <span class="cta-note">{{ page.cta_note }}</span>
         </div>
       </div>

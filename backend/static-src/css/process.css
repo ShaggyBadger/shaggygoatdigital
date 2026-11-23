@@ -163,25 +163,14 @@
     line-height: 1.5;
   }
 
-  /* Ownership and fit */
-  .split {
+  /* Ownership */
+  .ownership {
     padding: 68px 0 72px;
     background: var(--color-stone);
     border-top: 2px solid var(--color-gold);
   }
 
-  .split-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 56px;
-  }
-
-  .split-copy + .split-copy {
-    padding-left: 40px;
-    border-left: 1px solid var(--color-line);
-  }
-
-  .split-copy h2 {
+  .ownership h2 {
     margin: 0 0 18px;
     font-family: var(--font-display);
     font-size: clamp(30px, 3.4vw, 42px);
@@ -190,15 +179,15 @@
     letter-spacing: -0.03em;
   }
 
-  .split-copy p {
-    max-width: 46ch;
+  .ownership p {
+    max-width: 62ch;
     margin: 0 0 16px;
     color: var(--color-muted);
     font-size: 16px;
     line-height: 1.6;
   }
 
-  .split-copy p:last-child { margin-bottom: 0; }
+  .ownership p:last-child { margin-bottom: 0; }
 
   /* FAQ */
   .faq {
@@ -291,6 +280,17 @@
 
   .cta-band .btn:hover { background: var(--color-stone); }
 
+  .cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .cta-band :focus-visible { outline-color: var(--color-black); }
+
   .cta-note {
     font-size: 11px;
     font-weight: 700;
@@ -313,14 +313,7 @@
     .stack { padding: 48px 0 52px; }
     .stack-grid { grid-template-columns: 1fr; gap: 32px; }
 
-    .split { padding: 48px 0 52px; }
-    .split-grid { grid-template-columns: 1fr; gap: 36px; }
-    .split-copy + .split-copy {
-      padding-left: 0;
-      padding-top: 32px;
-      border-left: 0;
-      border-top: 1px solid var(--color-line);
-    }
+    .ownership { padding: 48px 0 52px; }
 
     .faq { padding: 48px 0 52px; }
     .faq-item summary { padding: 16px 0; font-size: 18px; }
