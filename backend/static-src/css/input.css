@@ -986,16 +986,14 @@
     font-size: 13px;
   }
 
-  .foot-nav {
-    display: flex;
-    gap: 18px;
-    margin-left: auto;
+  .foot-link {
     color: var(--color-muted);
     font-size: 13px;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 
-  .foot-nav a { text-decoration: none; }
-  .foot-nav a:hover { color: var(--color-ink); }
+  .foot-link:hover { color: var(--color-ink); }
 
   .copyright {
     width: 100%;
@@ -1141,8 +1139,6 @@
 
     .contact { padding: 44px 0 48px; }
     .contact h2 { font-size: 38px; }
-
-    .foot-nav { margin-left: 0; }
   }
 
   /* Form states */
